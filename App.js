@@ -3,6 +3,7 @@ import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
 import LoginScreen from './Screens/LoginScreen';
+import RegistrationScreen from './Screens/RegistrationScreen';
 
 /* Переменная Font дает нас возможность загрузить шрифты в асинхронном режиме в наше приложение. 
     Создаем функцию которая будет загружать шрифты */
@@ -24,7 +25,8 @@ export default function App() {
 
   return (
     <>
-      <LoginScreen />
+      {/* <LoginScreen /> */}
+      <RegistrationScreen />
     </>
   );
 }
