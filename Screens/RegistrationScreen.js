@@ -17,7 +17,7 @@ import TextTitle from '../components/TextTitle';
 /* ImageBackground */
 const bgImage = require('../assets/images/bgAuth.jpeg');
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ dimensions }) => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -61,7 +61,7 @@ const RegistrationScreen = () => {
           <View
             style={{
               ...styles.wrap,
-              paddingBottom: isShowKeyboard ? (Platform.OS == 'ios' ? 260 : 32) : 45,
+              paddingBottom: isShowKeyboard ? (Platform.OS == 'ios' ? 230 : 32) : 45,
             }}
           >
             <InputAvatar />

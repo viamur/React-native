@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Font from 'expo-font';
+import { Dimensions } from 'react-native';
 import AppLoading from 'expo-app-loading';
 
 import LoginScreen from './Screens/LoginScreen';
@@ -17,6 +18,19 @@ const loadFonts = async () => {
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
+  const [dimensions, setDimensions] = useState(Dimensions.get('window').width - 20 * 2);
+
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get('window').width - 20 * 2;
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener('change', onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener('change', onChange);
+  //   };
+  // }, []);
+
   if (!isReady) {
     return (
       <AppLoading startAsync={loadFonts} onFinish={() => setIsReady(true)} onError={console.warn} />
@@ -26,7 +40,7 @@ export default function App() {
   return (
     <>
       {/* <LoginScreen /> */}
-      <RegistrationScreen />
+      <RegistrationScreen dimensions={dimensions} />
     </>
   );
 }
