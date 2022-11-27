@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import BtnSubmit from '../components/BtnSubmit';
+import InputAvatar from '../components/InputAvatar';
 import InputDefault from '../components/InputDefault';
 import InputPassword from '../components/InputPassword';
 import TextTitle from '../components/TextTitle';
@@ -60,9 +61,10 @@ const RegistrationScreen = () => {
           <View
             style={{
               ...styles.wrap,
-              paddingBottom: isShowKeyboard ? (Platform.OS == 'ios' ? 260 : 32) : 110,
+              paddingBottom: isShowKeyboard ? (Platform.OS == 'ios' ? 260 : 32) : 45,
             }}
           >
+            <InputAvatar />
             <TextTitle title="Регестрация" />
             <InputDefault
               nameActiveInput={nameActiveInput}
@@ -112,11 +114,12 @@ const styles = StyleSheet.create({
   },
   wrap: {
     backgroundColor: '#fff',
+    position: 'relative',
 
     width: '100%',
     alignItems: 'center',
 
-    paddingTop: 32,
+    paddingTop: 92,
     // paddingBottom: 110,
     paddingHorizontal: 10,
 
