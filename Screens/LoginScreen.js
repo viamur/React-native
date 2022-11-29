@@ -16,7 +16,7 @@ import TextTitle from '../components/TextTitle';
 /* ImageBackground */
 const bgImage = require('../assets/images/bgAuth.jpeg');
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -46,6 +46,9 @@ const LoginScreen = () => {
     setPassword('');
     setNameActiveInput('');
     handleUseKeyboard();
+
+    // перебрасывает на home
+    navigation.navigate('Home');
   };
 
   return (
@@ -80,7 +83,13 @@ const LoginScreen = () => {
               <>
                 <BtnSubmit title={'Войти'} onSubmit={handleSubmit} />
 
-                <Text style={styles.textBottom}>Нет аккаунта? Зарегистрироваться</Text>
+                <Text style={styles.textBottom}>
+                  Нет аккаунта?{' '}
+                  <Text onPress={() => navigation.navigate('Registration')}>
+                    {' '}
+                    Зарегистрироваться
+                  </Text>
+                </Text>
               </>
             )}
           </View>
