@@ -2,17 +2,21 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-nativ
 import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
 
+//del
+const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
+
 const PostsScreen = () => {
   return (
     <View style={styles.container}>
       <ProfilePost />
-      <ScrollView style={styles.scrollView}>
-        {/* <FlatList
-          data={courses}
-          renderItem={({ item }) => <ItemPost data={item} />}
-          keyExtractor={item => item.id}
-        /> */}
-      </ScrollView>
+      {/* <ScrollView style={styles.scrollView}> */}
+      <FlatList
+        data={data}
+        style={{ width: '100%', marginTop: 32 }}
+        renderItem={({ item }) => <ItemPost data={item} />}
+        keyExtractor={item => item.id}
+      />
+      {/* </ScrollView> */}
     </View>
   );
 };

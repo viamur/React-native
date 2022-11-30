@@ -1,15 +1,63 @@
-import { Text, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BgImage from '../components/BgImage';
+import InputAvatar from '../components/InputAvatar';
+import ItemPost from '../components/ItemPost';
 
-const ProfileScreen = () => {
+//icon
+import { MaterialIcons } from '@expo/vector-icons';
+
+//del
+const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
+
+const ProfileScreen = ({ setIsAuth }) => {
   return (
     <BgImage>
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: 'white', fontSize: 20 }}>ProfileScreen</Text>
+      <SafeAreaView style={{ paddingTop: 100 }}>
+        <View style={styles.container}>
+          <InputAvatar />
+          <Text style={styles.userName}>Natali Romanova</Text>
+          {/* <ScrollView style={{ width: '100%' }}> */}
+          <FlatList
+            data={data}
+            style={{ width: '100%' }}
+            renderItem={({ item }) => <ItemPost data={item} />}
+            keyExtractor={item => item.id}
+          />
+          {/* </ScrollView> */}
+          <TouchableOpacity onPress={() => setIsAuth(false)} style={styles.logout}>
+            <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </BgImage>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff',
+    height: '100%',
+    paddingTop: 90,
+    paddingHorizontal: 16,
+    position: 'relative',
 
+    alignItems: 'center',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+  },
+  logout: {
+    position: 'absolute',
+    right: 16,
+    top: 24,
+  },
+  userName: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 30,
+    lineHeight: 35,
+    letterSpacing: '0.01em',
+    color: '#212121',
+
+    marginBottom: 32,
+  },
+});
 export default ProfileScreen;

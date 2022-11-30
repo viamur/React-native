@@ -2,6 +2,7 @@ import {
   Image,
   Keyboard,
   KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -9,68 +10,70 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import BtnSubmit from '../components/BtnSubmit';
 
 //icon
 import { SimpleLineIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import BtnSubmit from '../components/BtnSubmit';
 
 const CreatePostsScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <KeyboardAvoidingView
+        {/* <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
-          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        > */}
+        <TouchableOpacity
+          onPress={() => Keyboard.dismiss()}
+          activeOpacity={0.7}
+          style={styles.uploadImgBlock}
         >
-          <TouchableOpacity
-            onPress={() => Keyboard.dismiss()}
-            activeOpacity={0.7}
-            style={styles.uploadImgBlock}
-          >
-            <View style={styles.wrapForPositionIcon}>
-              <Image style={styles.image} resizeMode="cover" />
-              <View
-                style={{
-                  ...styles.wrapIcon,
-                  backgroundColor: true ? '#fff' : 'rgba(255, 255, 255, 0.3)',
-                }}
-              >
-                <MaterialIcons name="photo-camera" size={24} color={true ? '#BDBDBD' : '#fff'} />
-              </View>
+          <View style={styles.wrapForPositionIcon}>
+            <Image style={styles.image} resizeMode="cover" />
+            <View
+              style={{
+                ...styles.wrapIcon,
+                backgroundColor: true ? '#fff' : 'rgba(255, 255, 255, 0.3)',
+              }}
+            >
+              <MaterialIcons name="photo-camera" size={24} color={true ? '#BDBDBD' : '#fff'} />
             </View>
-            <Text style={styles.textUploadImg}>
-              {true ? 'Загрузите фото' : 'Редактировать фото'}
-            </Text>
-          </TouchableOpacity>
-          {/* ===========================================FORM=============================== */}
+          </View>
+          <Text style={styles.textUploadImg}>{true ? 'Загрузите фото' : 'Редактировать фото'}</Text>
+        </TouchableOpacity>
+        {/* ===========================================FORM=============================== */}
+
+        <TextInput
+          style={styles.inputName}
+          placeholder="Название..."
+          placeholderTextColor={'#bdbdbd'}
+        />
+
+        <TouchableOpacity activeOpacity={0.7} style={styles.wrapLocation}>
           <TextInput
-            style={styles.inputName}
-            placeholder="Название..."
+            placeholder="Местность..."
             placeholderTextColor={'#bdbdbd'}
+            style={{ ...styles.inputName, paddingLeft: 28 }}
           />
-          <TouchableOpacity activeOpacity={0.7} style={styles.wrapLocation}>
-            <TextInput
-              placeholder="Местность..."
-              placeholderTextColor={'#bdbdbd'}
-              style={{ ...styles.inputName, paddingLeft: 28 }}
-            />
-            <SimpleLineIcons
-              name="location-pin"
-              style={styles.iconLocation}
-              size={18}
-              color="#BDBDBD"
-            />
-          </TouchableOpacity>
-          <BtnSubmit
-            title={'Опубликовать'}
-            disabled={true ? true : false}
-            onSubmit={() => console.log('hello')}
+          <SimpleLineIcons
+            name="location-pin"
+            style={styles.iconLocation}
+            size={18}
+            color="#BDBDBD"
           />
-        </KeyboardAvoidingView>
+        </TouchableOpacity>
+        <BtnSubmit
+          title={'Опубликовать'}
+          disabled={true ? true : false}
+          onSubmit={() => console.log('hello')}
+        />
+
         {/* =======================================TRASH=========================================== */}
+
         <TouchableOpacity activeOpacity={0.7} style={styles.wrapTrash}>
           <FontAwesome5 name="trash-alt" size={24} color="#BDBDBD" />
         </TouchableOpacity>
+        {/* </KeyboardAvoidingView> */}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -80,6 +83,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingTop: 32,
+    paddingBottom: 32,
     flex: 1,
 
     backgroundColor: '#fff',
