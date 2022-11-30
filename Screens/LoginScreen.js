@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   ImageBackground,
@@ -8,20 +9,19 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
+import BgImage from '../components/BgImage';
 import BtnSubmit from '../components/BtnSubmit';
 import InputDefault from '../components/InputDefault';
 import InputPassword from '../components/InputPassword';
 import TextTitle from '../components/TextTitle';
 
-/* ImageBackground */
-const bgImage = require('../assets/images/bgAuth.jpeg');
-
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ setIsAuth }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [isShowKeyboard, isSetShowKeyboard] = useState(false);
   const [nameActiveInput, setNameActiveInput] = useState('');
+  const { navigate } = useNavigation();
 
   const handleActive = (focus, name) => {
     if (focus === 'onFocus') {
@@ -48,13 +48,13 @@ const LoginScreen = ({ navigation }) => {
     handleUseKeyboard();
 
     // перебрасывает на home
-    navigation.navigate('Home');
+    setIsAuth(true);
   };
 
   return (
     <TouchableWithoutFeedback onPress={handleUseKeyboard}>
       <View style={styles.container}>
-        <ImageBackground source={bgImage} resizeMode="cover" style={styles.background}>
+        <BgImage>
           {/* <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'}> */}
           <View
             style={{
@@ -85,16 +85,13 @@ const LoginScreen = ({ navigation }) => {
 
                 <Text style={styles.textBottom}>
                   Нет аккаунта?{' '}
-                  <Text onPress={() => navigation.navigate('Registration')}>
-                    {' '}
-                    Зарегистрироваться
-                  </Text>
+                  <Text onPress={() => navigate('Registration')}> Зарегистрироваться</Text>
                 </Text>
               </>
             )}
           </View>
           {/* </KeyboardAvoidingView> */}
-        </ImageBackground>
+        </BgImage>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -105,10 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  background: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
+
   wrap: {
     backgroundColor: '#fff',
 

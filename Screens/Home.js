@@ -1,15 +1,18 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import CreatePostsScreen from './CreatePostsScreen';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
 import { Button, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const MainTab = createBottomTabNavigator();
 
-const Home = ({ navigation }) => {
+const Home = ({ setIsAuth }) => {
+  const navigation = useNavigation();
   return (
     <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <MainTab.Screen
@@ -19,12 +22,12 @@ const Home = ({ navigation }) => {
           title: 'Публикации',
           headerTitleStyle: styles.headerTitle,
           headerRight: () => (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsAuth(false)}>
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
-          headerLeftContainerStyle: styles.header,
-          headerRightContainerStyle: styles.header,
+          headerLeftContainerStyle: styles.headerLeft,
+          headerRightContainerStyle: styles.headerRight,
           tabBarIcon: ({ focused, size, color }) => {
             return <Feather name="grid" size={size} color={'rgba(33, 33, 33, 0.8)'} />;
           },
@@ -38,7 +41,13 @@ const Home = ({ navigation }) => {
         options={{
           tabBarStyle: { display: 'none' },
           title: 'Создать Публикацию',
-
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <AntDesign name="arrowleft" size={24} color="rgba(33, 33, 33, 0.8)" />
+            </TouchableOpacity>
+          ),
+          headerLeftContainerStyle: styles.headerLeft,
+          headerRightContainerStyle: styles.headerRight,
           tabBarIcon: ({ focused, size, color }) => (
             <View style={styles.ovalIcon}>
               <Feather name="plus" size={20} color={'#FFFFFF'} />
@@ -76,8 +85,11 @@ const styles = StyleSheet.create({
     letterSpacing: -0.4,
     color: '#212121',
   },
-  header: {
+  headerRight: {
     paddingRight: 16,
+  },
+  headerLeft: {
+    paddingLeft: 16,
   },
 });
 

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import {
   ImageBackground,
@@ -8,6 +9,7 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
+import BgImage from '../components/BgImage';
 import BtnSubmit from '../components/BtnSubmit';
 import InputAvatar from '../components/InputAvatar';
 import InputDefault from '../components/InputDefault';
@@ -17,13 +19,14 @@ import TextTitle from '../components/TextTitle';
 /* ImageBackground */
 const bgImage = require('../assets/images/bgAuth.jpeg');
 
-const RegistrationScreen = ({ navigation }) => {
+const RegistrationScreen = ({ setIsAuth }) => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [isShowKeyboard, isSetShowKeyboard] = useState(false);
   const [nameActiveInput, setNameActiveInput] = useState('');
+  const { navigate } = useNavigation();
 
   const handleActive = (focus, name) => {
     if (focus === 'onFocus') {
@@ -54,13 +57,14 @@ const RegistrationScreen = ({ navigation }) => {
     handleUseKeyboard();
 
     // перебрасывает на home
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
+    setIsAuth(true);
   };
 
   return (
     <TouchableWithoutFeedback onPress={handleUseKeyboard}>
       <View style={styles.container}>
-        <ImageBackground source={bgImage} resizeMode="cover" style={styles.background}>
+        <BgImage>
           <View
             style={{
               ...styles.wrap,
@@ -97,12 +101,19 @@ const RegistrationScreen = ({ navigation }) => {
                 <BtnSubmit title={'Зарегистрироваться'} onSubmit={handleSubmit} />
 
                 <Text style={styles.textBottom}>
-                  Уже есть аккаунт? <Text onPress={() => navigation.navigate('Login')}>Войти</Text>
+                  Уже есть аккаунт?{' '}
+                  <Text
+                    onPress={() => {
+                      navigate('Login');
+                    }}
+                  >
+                    Войти
+                  </Text>
                 </Text>
               </>
             )}
           </View>
-        </ImageBackground>
+        </BgImage>
       </View>
     </TouchableWithoutFeedback>
   );
