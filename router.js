@@ -10,8 +10,6 @@ const AuthStack = createStackNavigator();
 const useRoute = () => {
   const [isAuth, setIsAuth] = useState(false);
 
-  //   const navigation = useNavigation();
-
   return (
     <AuthStack.Navigator>
       {!isAuth ? (

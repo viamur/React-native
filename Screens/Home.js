@@ -7,12 +7,14 @@ import CreatePostsScreen from './CreatePostsScreen';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
 import { Button, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, TabRouter } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
 
 const MainTab = createBottomTabNavigator();
 
 const Home = ({ setIsAuth }) => {
   const navigation = useNavigation();
+
   return (
     <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <MainTab.Screen
@@ -48,11 +50,13 @@ const Home = ({ setIsAuth }) => {
           ),
           headerLeftContainerStyle: styles.headerLeft,
           headerRightContainerStyle: styles.headerRight,
-          tabBarIcon: ({ focused, size, color }) => (
-            <View style={styles.ovalIcon}>
-              <Feather name="plus" size={20} color={'#FFFFFF'} />
-            </View>
-          ),
+          tabBarIcon: ({ focused, size, color }) => {
+            return (
+              <View style={styles.ovalIcon}>
+                <Feather name="plus" size={20} color={'#FFFFFF'} />
+              </View>
+            );
+          },
         }}
       />
       <MainTab.Screen
@@ -60,9 +64,9 @@ const Home = ({ setIsAuth }) => {
         component={ProfileScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused, size, color }) => (
-            <Feather name="user" size={size} color={'rgba(33, 33, 33, 0.8)'} />
-          ),
+          tabBarIcon: ({ focused, size, color }) => {
+            return <Feather name="user" size={size} color={'rgba(33, 33, 33, 0.8)'} />;
+          },
         }}
       />
     </MainTab.Navigator>

@@ -1,9 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-const BtnSubmit = ({ title, onSubmit }) => {
+const BtnSubmit = ({ title, onSubmit, disabled = false }) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={styles.btnSend} onPress={onSubmit}>
-      <Text style={styles.btnSendText}>{title}</Text>
+    <TouchableOpacity
+      disabled={disabled}
+      activeOpacity={0.8}
+      style={{ ...styles.btnSend, backgroundColor: disabled ? '#F6F6F6' : '#FF6C00' }}
+      onPress={onSubmit}
+    >
+      <Text style={{ ...styles.btnSendText, color: disabled ? '#bdbdbd' : '#fff' }}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -13,8 +18,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 16,
     width: '100%',
-
-    backgroundColor: '#FF6C00',
   },
   btnSendText: {
     fontFamily: 'Roboto-Regular',
@@ -22,7 +25,6 @@ const styles = StyleSheet.create({
     lineHeight: 19,
 
     textAlign: 'center',
-    color: '#fff',
   },
 });
 
