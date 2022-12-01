@@ -9,3 +9,7 @@
 # goit-react native-hw-03
 
 ![GitHub actions settings](./assets/screenshot/hw03.png)
+
+# goit-react native-hw-04
+
+![GitHub actions settings](./assets/screenshot/hw04.png)

@@ -13,23 +13,23 @@ const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
 const ProfileScreen = ({ setIsAuth }) => {
   return (
     <BgImage>
-      <SafeAreaView style={{ paddingTop: 100 }}>
-        <View style={styles.container}>
-          <InputAvatar />
-          <Text style={styles.userName}>Natali Romanova</Text>
-          {/* <ScrollView style={{ width: '100%' }}> */}
-          <FlatList
-            data={data}
-            style={{ width: '100%' }}
-            renderItem={({ item }) => <ItemPost data={item} />}
-            keyExtractor={item => item.id}
-          />
-          {/* </ScrollView> */}
-          <TouchableOpacity onPress={() => setIsAuth(false)} style={styles.logout}>
-            <MaterialIcons name="logout" size={24} color="#BDBDBD" />
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      <ScrollView>
+        <SafeAreaView style={{ paddingTop: 100 }}>
+          <View style={styles.container}>
+            <InputAvatar />
+            <Text style={styles.userName}>Natali Romanova</Text>
+            <FlatList
+              data={data}
+              style={{ width: '100%' }}
+              renderItem={({ item }) => <ItemPost data={item} />}
+              keyExtractor={item => item.id}
+            />
+            <TouchableOpacity onPress={() => setIsAuth(false)} style={styles.logout}>
+              <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </ScrollView>
     </BgImage>
   );
 };

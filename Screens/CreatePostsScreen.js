@@ -3,6 +3,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -10,70 +11,91 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { useState } from 'react';
 import BtnSubmit from '../components/BtnSubmit';
 
 //icon
 import { SimpleLineIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 const CreatePostsScreen = () => {
+  const [title, setTitle] = useState('');
+  const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+
+  const handleUseKeyboard = () => {
+    setIsOpenKeyboard(false);
+    Keyboard.dismiss();
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        {/* <KeyboardAvoidingView
+    <TouchableWithoutFeedback onPress={handleUseKeyboard}>
+      <View style={{ flex: 1 }}>
+        <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
-        > */}
-        <TouchableOpacity
-          onPress={() => Keyboard.dismiss()}
-          activeOpacity={0.7}
-          style={styles.uploadImgBlock}
+          keyboardVerticalOffset={60}
+          style={{ flex: 1, backgroundColor: '#fff' }}
         >
-          <View style={styles.wrapForPositionIcon}>
-            <Image style={styles.image} resizeMode="cover" />
-            <View
-              style={{
-                ...styles.wrapIcon,
-                backgroundColor: true ? '#fff' : 'rgba(255, 255, 255, 0.3)',
-              }}
-            >
-              <MaterialIcons name="photo-camera" size={24} color={true ? '#BDBDBD' : '#fff'} />
+          <ScrollView>
+            <View style={{ ...styles.container, paddingBottom: isOpenKeyboard ? 300 : 32 }}>
+              <TouchableOpacity
+                onPress={() => Keyboard.dismiss()}
+                activeOpacity={0.7}
+                style={styles.uploadImgBlock}
+              >
+                <View style={styles.wrapForPositionIcon}>
+                  <Image style={styles.image} resizeMode="cover" />
+                  <View
+                    style={{
+                      ...styles.wrapIcon,
+                      backgroundColor: true ? '#fff' : 'rgba(255, 255, 255, 0.3)',
+                    }}
+                  >
+                    <MaterialIcons
+                      name="photo-camera"
+                      size={24}
+                      color={true ? '#BDBDBD' : '#fff'}
+                    />
+                  </View>
+                </View>
+                <Text style={styles.textUploadImg}>
+                  {true ? 'Загрузите фото' : 'Редактировать фото'}
+                </Text>
+              </TouchableOpacity>
+              {/* ===========================================FORM=============================== */}
+              <TextInput
+                style={styles.inputName}
+                placeholder="Название..."
+                placeholderTextColor={'#bdbdbd'}
+                onFocus={() => setIsOpenKeyboard(true)}
+                onBlur={handleUseKeyboard}
+                value={title}
+                onChangeText={setTitle}
+              />
+
+              <TouchableOpacity activeOpacity={0.7} style={styles.wrapLocation}>
+                <TextInput
+                  placeholder="Местность..."
+                  placeholderTextColor={'#bdbdbd'}
+                  style={{ ...styles.inputName, paddingLeft: 28 }}
+                />
+                <SimpleLineIcons
+                  name="location-pin"
+                  style={styles.iconLocation}
+                  size={18}
+                  color="#BDBDBD"
+                />
+              </TouchableOpacity>
+              <BtnSubmit
+                title={'Опубликовать'}
+                disabled={true ? true : false}
+                onSubmit={() => console.log('hello')}
+              />
+              {/* =======================================TRASH=========================================== */}
             </View>
-          </View>
-          <Text style={styles.textUploadImg}>{true ? 'Загрузите фото' : 'Редактировать фото'}</Text>
-        </TouchableOpacity>
-        {/* ===========================================FORM=============================== */}
-
-        <TextInput
-          style={styles.inputName}
-          placeholder="Название..."
-          placeholderTextColor={'#bdbdbd'}
-        />
-
-        <TouchableOpacity activeOpacity={0.7} style={styles.wrapLocation}>
-          <TextInput
-            placeholder="Местность..."
-            placeholderTextColor={'#bdbdbd'}
-            style={{ ...styles.inputName, paddingLeft: 28 }}
-          />
-          <SimpleLineIcons
-            name="location-pin"
-            style={styles.iconLocation}
-            size={18}
-            color="#BDBDBD"
-          />
-        </TouchableOpacity>
-        <BtnSubmit
-          title={'Опубликовать'}
-          disabled={true ? true : false}
-          onSubmit={() => console.log('hello')}
-        />
-
-        {/* =======================================TRASH=========================================== */}
-
+          </ScrollView>
+        </KeyboardAvoidingView>
         <TouchableOpacity activeOpacity={0.7} style={styles.wrapTrash}>
           <FontAwesome5 name="trash-alt" size={24} color="#BDBDBD" />
         </TouchableOpacity>
-        {/* </KeyboardAvoidingView> */}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -83,8 +105,10 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingTop: 32,
-    paddingBottom: 32,
+    // paddingBottom: 32,
     flex: 1,
+
+    minHeight: '100%',
 
     backgroundColor: '#fff',
   },
@@ -158,7 +182,7 @@ const styles = StyleSheet.create({
     bottom: 22,
     left: '50%',
 
-    transform: [{ translateX: -20 }],
+    transform: [{ translateX: -35 }],
   },
 });
 
