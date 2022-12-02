@@ -1,0 +1,4 @@
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Give permission to access your photos</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Give permission to save photos</string>

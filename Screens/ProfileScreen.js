@@ -10,7 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 //del
 const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
-const ProfileScreen = ({ setIsAuth }) => {
+const ProfileScreen = ({ navigation, setIsAuth }) => {
   return (
     <BgImage>
       <ScrollView>
@@ -21,7 +21,7 @@ const ProfileScreen = ({ setIsAuth }) => {
             <FlatList
               data={data}
               style={{ width: '100%' }}
-              renderItem={({ item }) => <ItemPost data={item} />}
+              renderItem={({ item }) => <ItemPost data={item} navigation={navigation} />}
               keyExtractor={item => item.id}
             />
             <TouchableOpacity onPress={() => setIsAuth(false)} style={styles.logout}>

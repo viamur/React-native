@@ -3,18 +3,18 @@ import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
 
 //del
-const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
+// const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
-const PostsScreen = () => {
+const PostsScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <ProfilePost />
       {/* <ScrollView style={styles.scrollView}> */}
       <FlatList
-        data={data}
+        data={route.params}
         style={{ width: '100%', marginTop: 32 }}
-        renderItem={({ item }) => <ItemPost data={item} />}
-        keyExtractor={item => item.id}
+        renderItem={({ item }) => <ItemPost data={item} navigation={navigation} />}
+        keyExtractor={(item, idx) => idx}
       />
       {/* </ScrollView> */}
     </View>

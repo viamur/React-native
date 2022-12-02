@@ -6,20 +6,26 @@ import { SimpleLineIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 //del
 import img from '../assets/icon.png';
 
-const ItemPost = () => {
+const ItemPost = ({ navigation, data }) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.image} resizeMode={'cover'} source={img} />
-      <Text style={styles.title}>Лес</Text>
+      <Image style={styles.image} resizeMode={'cover'} source={data.photo} />
+      <Text style={styles.title}>{data.title}</Text>
       <View style={styles.bottomBlock}>
         <View style={styles.iconBlock}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.iconBlock}>
-            {false ? (
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.iconBlock}
+            onPress={() => navigation.navigate('Comment', { photo: data.photo })}
+          >
+            {data.comment < 1 ? (
               <FontAwesome name="comment-o" style={styles.icon} size={18} color="#BDBDBD" />
             ) : (
               <FontAwesome name="comment" style={styles.icon} size={18} color="#FF6C00" />
             )}
-            <Text style={false ? styles.countComment : styles.countCommentAccent}>8</Text>
+            <Text style={false ? styles.countComment : styles.countCommentAccent}>
+              {data.comment}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7} style={styles.iconBlock}>
             {false ? (
@@ -27,12 +33,24 @@ const ItemPost = () => {
             ) : (
               <AntDesign name="like1" style={styles.icon} size={18} color="#FF6C00" />
             )}
-            <Text style={false ? styles.countComment : styles.countCommentAccent}>8</Text>
+            <Text style={false ? styles.countComment : styles.countCommentAccent}>{data.like}</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity activeOpacity={0.7} style={styles.bottomBlock}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.bottomBlock}
+          onPress={() => {
+            navigation.navigate('Map', {
+              coordinate: data.coordinate,
+              nameLocation: data.nameLocation,
+              title: data.title,
+            });
+          }}
+        >
           <SimpleLineIcons name="location-pin" style={styles.icon} size={18} color="#BDBDBD" />
-          <Text style={{ ...styles.countCommentAccent, ...styles.locationText }}>Ukraine</Text>
+          <Text style={{ ...styles.countCommentAccent, ...styles.locationText }}>
+            {data.nameLocation}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -72,6 +90,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 8,
+    transform: [{ scaleX: -1 }],
   },
   countComment: {
     fontFamily: 'Roboto-Regular',

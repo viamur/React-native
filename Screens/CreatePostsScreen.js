@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -11,20 +12,119 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+// expo modul
+import { Camera, CameraType } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
+import * as Location from 'expo-location';
+
+// components
 import BtnSubmit from '../components/BtnSubmit';
 
 //icon
 import { SimpleLineIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-const CreatePostsScreen = () => {
+const CreatePostsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
+  const [nameLocation, setNameLocation] = useState('');
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+
+  // useState work with camera
+  const [photo, setPhoto] = useState(null);
+  const [idPhoto, setIdPhoto] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [cameraOn, setCameraOn] = useState(false);
+
+  // usePermissions
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [permissionResponse, requestPermissio] = MediaLibrary.usePermissions();
+
+  useEffect(() => {
+    MediaLibrary.requestPermissionsAsync();
+    setCameraOn(true);
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Permission to access location was denied');
+        return;
+      }
+    })();
+    return async () => {
+      setCameraOn(false);
+    };
+  }, []);
 
   const handleUseKeyboard = () => {
     setIsOpenKeyboard(false);
     Keyboard.dismiss();
   };
+
+  const takePhoto = async () => {
+    try {
+      if (cameraRef) {
+        /* Make photo and take uri */
+        const { uri } = await cameraRef.takePictureAsync();
+        /* Save in phone library */
+        const { id } = await MediaLibrary.createAssetAsync(uri);
+        setIdPhoto(id);
+        return setPhoto(uri);
+      }
+      const res = await MediaLibrary.deleteAssetsAsync(idPhoto);
+      if (res) {
+        setIdPhoto(null);
+        setPhoto(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmitForm = async () => {
+    try {
+      // const coordinate = await Location.getCurrentPositionAsync({}); //очень долго ждать геопозицию
+      const coordinate = await Location.getLastKnownPositionAsync(); // берет последнию геопозицию с памяти
+
+      const data = {
+        photo,
+        title,
+        nameLocation,
+        coordinate,
+        like: 0,
+        comment: 0,
+      };
+      navigation.navigate('Posts', [data]);
+      setIdPhoto(null);
+      setPhoto(null);
+      setTitle('');
+      setNameLocation('');
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  const reset = async () => {
+    try {
+      setTitle('');
+      setNameLocation('');
+      if (idPhoto) {
+        const res = await MediaLibrary.deleteAssetsAsync(idPhoto);
+        if (res) {
+          setIdPhoto(null);
+          setPhoto(null);
+        }
+      }
+    } catch (error) {
+      console.log('reset', error);
+    }
+  };
+
+  if (!permission) {
+    return <View />;
+  }
+  if (!permission.granted) {
+    return <Text>No access to camera</Text>;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={handleUseKeyboard}>
@@ -37,27 +137,32 @@ const CreatePostsScreen = () => {
           <ScrollView>
             <View style={{ ...styles.container, paddingBottom: isOpenKeyboard ? 300 : 32 }}>
               <TouchableOpacity
-                onPress={() => Keyboard.dismiss()}
+                onPress={() => takePhoto()}
                 activeOpacity={0.7}
                 style={styles.uploadImgBlock}
               >
                 <View style={styles.wrapForPositionIcon}>
-                  <Image style={styles.image} resizeMode="cover" />
+                  {photo ? (
+                    <Image style={styles.image} resizeMode="cover" source={{ uri: photo }} />
+                  ) : (
+                    /* ===========================================Camera=============================== */
+                    cameraOn && <Camera style={styles.image} ref={setCameraRef} />
+                  )}
                   <View
                     style={{
                       ...styles.wrapIcon,
-                      backgroundColor: true ? '#fff' : 'rgba(255, 255, 255, 0.3)',
+                      backgroundColor: !photo ? '#fff' : 'rgba(255, 255, 255, 0.3)',
                     }}
                   >
                     <MaterialIcons
                       name="photo-camera"
                       size={24}
-                      color={true ? '#BDBDBD' : '#fff'}
+                      color={!photo ? '#BDBDBD' : '#fff'}
                     />
                   </View>
                 </View>
                 <Text style={styles.textUploadImg}>
-                  {true ? 'Загрузите фото' : 'Редактировать фото'}
+                  {!photo ? 'Загрузите фото' : 'Редактировать фото'}
                 </Text>
               </TouchableOpacity>
               {/* ===========================================FORM=============================== */}
@@ -75,6 +180,10 @@ const CreatePostsScreen = () => {
                 <TextInput
                   placeholder="Местность..."
                   placeholderTextColor={'#bdbdbd'}
+                  onFocus={() => setIsOpenKeyboard(true)}
+                  onBlur={handleUseKeyboard}
+                  value={nameLocation}
+                  onChangeText={setNameLocation}
                   style={{ ...styles.inputName, paddingLeft: 28 }}
                 />
                 <SimpleLineIcons
@@ -86,15 +195,26 @@ const CreatePostsScreen = () => {
               </TouchableOpacity>
               <BtnSubmit
                 title={'Опубликовать'}
-                disabled={true ? true : false}
-                onSubmit={() => console.log('hello')}
+                disabled={title.length > 0 && photo && nameLocation.length > 0 ? false : true}
+                onSubmit={() => handleSubmitForm()}
               />
               {/* =======================================TRASH=========================================== */}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-        <TouchableOpacity activeOpacity={0.7} style={styles.wrapTrash}>
-          <FontAwesome5 name="trash-alt" size={24} color="#BDBDBD" />
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            ...styles.wrapTrash,
+            backgroundColor: title || photo || nameLocation ? '#FF6C00' : '#F6F6F6',
+          }}
+          onPress={() => reset()}
+        >
+          <FontAwesome5
+            name="trash-alt"
+            size={24}
+            color={title || photo || nameLocation ? '#fff' : '#BDBDBD'}
+          />
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
@@ -128,6 +248,8 @@ const styles = StyleSheet.create({
     borderColor: '#e8e8e8',
     borderWidth: 1,
     borderRadius: 8,
+
+    overflow: 'hidden',
 
     marginBottom: 8,
   },
@@ -172,7 +294,6 @@ const styles = StyleSheet.create({
     width: 70,
     height: 40,
 
-    backgroundColor: '#F6F6F6',
     borderRadius: 20,
 
     alignItems: 'center',

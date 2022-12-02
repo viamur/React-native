@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 const MainTab = createBottomTabNavigator();
 
-const Home = ({ setIsAuth }) => {
+const Home = ({}) => {
   const navigation = useNavigation();
 
   return (
@@ -24,7 +24,7 @@ const Home = ({ setIsAuth }) => {
           title: 'Публикации',
           headerTitleStyle: styles.headerTitle,
           headerRight: () => (
-            <TouchableOpacity onPress={() => setIsAuth(false)}>
+            <TouchableOpacity onPress={() => {}}>
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
@@ -41,6 +41,7 @@ const Home = ({ setIsAuth }) => {
         name="CreatePost"
         component={CreatePostsScreen}
         options={{
+          unmountOnBlur: true,
           tabBarStyle: { display: 'none' },
           title: 'Создать Публикацию',
           headerLeft: () => (

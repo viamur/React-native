@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as Font from 'expo-font';
-import { Dimensions } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -52,12 +52,11 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>{routing}</NavigationContainer>
-    </SafeAreaProvider>
+    <>
+      <SafeAreaProvider>
+        <NavigationContainer>{routing}</NavigationContainer>
+      </SafeAreaProvider>
+      <StatusBar barStyle="dark-content" />
+    </>
   );
-}
-
-{
-  /* <StatusBar style="auto" /> */
 }
