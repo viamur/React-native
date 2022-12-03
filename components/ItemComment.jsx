@@ -1,61 +1,72 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-
-// del
-// const userId = 1;
-// const data = {
-//   id: 1,
-//   photo: img,
-//   comments: [
-//     {
-//       id: 1,
-//       user: {
-//         userId: 2,
-//         avatar: img,
-//       },
-//       date: Date.now(),
-//       comment:
-//         'Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
-//     },
-//     {
-//       id: 2,
-//       user: {
-//         userId: 1,
-//         avatar: img,
-//       },
-//       date: Date.now(),
-//       comment:
-//         'A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.',
-//     },
-//     {
-//       id: 2,
-//       user: {
-//         userId: 2,
-//         avatar: img,
-//       },
-//       date: Date.now(),
-//       comment: 'Thank you! That was very helpful!.',
-//     },
-//   ],
-// };
+import { getDate } from '../utils/convertDate';
 
 const ItemComment = ({ userId, data }) => {
+  // check is owner this comment user
+  const isOwner = userId == data.user.userId;
+
+  // convert date in 09 июня, 2020 | 09:14
+  const date = getDate(data.date);
+
   return (
-    <View style={{ backgroundColor: userId == data.user.userId ? 'red' : 'white', flex: 1 }}>
-      <Image source={data.user.avatar} style={styles.image} />
-      <View>
-        <Text>{data.comment}</Text>
-        <Text>{data.date}</Text>
+    <View style={{ ...styles.container, flexDirection: isOwner ? 'row-reverse' : 'row' }}>
+      <Image
+        source={data.user.avatar}
+        style={{
+          ...styles.image,
+          marginRight: isOwner ? 0 : 16,
+          marginLeft: isOwner ? 16 : 0,
+        }}
+      />
+      <View
+        style={{
+          ...styles.wrap,
+          borderTopLeftRadius: isOwner ? 6 : 0,
+          borderTopRightRadius: isOwner ? 0 : 6,
+        }}
+      >
+        <Text style={styles.comment}>{data.comment}</Text>
+        <Text style={{ ...styles.date, textAlign: isOwner ? 'left' : 'right' }}>{date}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 24,
+  },
+  'container:last:child': {
+    marginBottom: 0,
+  },
   image: {
     width: 28,
     height: 28,
 
     borderRadius: '50%',
+  },
+  wrap: {
+    backgroundColor: 'rgba(0, 0, 0, 0.03)',
+    borderRadius: 6,
+    padding: 16,
+
+    flex: 1,
+  },
+  comment: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 13,
+    lineHeight: 18,
+
+    color: '#212121',
+
+    marginBottom: 8,
+  },
+  date: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 10,
+    lineHeight: 12,
+
+    color: '#bdbdbd',
   },
 });
 

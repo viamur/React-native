@@ -5,6 +5,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -30,7 +32,7 @@ const data = {
         userId: 2,
         avatar: img,
       },
-      data: Date.now(),
+      date: Date.now(),
       comment:
         'Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
     },
@@ -40,17 +42,35 @@ const data = {
         userId: 1,
         avatar: img,
       },
-      data: Date.now(),
+      date: Date.now(),
       comment:
         'A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.',
     },
     {
-      id: 2,
+      id: 3,
       user: {
         userId: 2,
         avatar: img,
       },
-      data: Date.now(),
+      date: Date.now(),
+      comment: 'Thank you! That was very helpful!.',
+    },
+    {
+      id: 4,
+      user: {
+        userId: 2,
+        avatar: img,
+      },
+      date: Date.now(),
+      comment: 'Thank you! That was very helpful!.',
+    },
+    {
+      id: 5,
+      user: {
+        userId: 2,
+        avatar: img,
+      },
+      date: Date.now(),
       comment: 'Thank you! That was very helpful!.',
     },
   ],
@@ -58,33 +78,46 @@ const data = {
 
 const CommentsScreen = ({ navigation, route }) => {
   const [comment, setComment] = useState('');
+  const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+
+  const handleCloseKeyboard = () => {
+    if (isOpenKeyboard) {
+      Keyboard.dismiss();
+      setIsOpenKeyboard(false);
+    }
+  };
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset={60}
       behavior={Platform.OS == 'ios' ? 'position' : 'height'}
     >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <Image source={data.photo} resizeMode="cover" style={styles.image} />
-          <FlatList
-            data={data.comments}
-            style={{ width: '100%', flex: 1 }}
-            renderItem={({ item }) => <ItemComment userId={userId} data={item} />}
-            keExtractor={(item, idx) => item.id}
-          />
-          <View style={styles.wrapInput}>
-            <TextInput
-              style={styles.input}
-              placeholder="Комментировать..."
-              value={comment}
-              onChangeText={text => setComment(text)}
+      <View style={styles.container}>
+        <TouchableWithoutFeedback disabled={!isOpenKeyboard} onPress={handleCloseKeyboard}>
+          <View style={{ flex: 1 }}>
+            <Image source={data.photo} resizeMode="cover" style={styles.image} />
+            <FlatList
+              data={data.comments}
+              style={{ flex: 1 }}
+              // item={{ paddingBottom: 24 }}
+              renderItem={({ item }) => <ItemComment userId={userId} data={item} />}
+              keExtractor={(item, idx) => item.id}
             />
-            <TouchableOpacity style={styles.btnSend}>
-              <AntDesign name="arrowup" size={20} color="white" />
-            </TouchableOpacity>
           </View>
+        </TouchableWithoutFeedback>
+        <View style={styles.wrapInput}>
+          <TextInput
+            style={styles.input}
+            placeholder="Комментировать..."
+            value={comment}
+            onBlur={handleCloseKeyboard}
+            onFocus={() => setIsOpenKeyboard(true)}
+            onChangeText={text => setComment(text)}
+          />
+          <TouchableOpacity style={styles.btnSend}>
+            <AntDesign name="arrowup" size={20} color="white" />
+          </TouchableOpacity>
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -123,6 +156,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e8e8e8',
 
+    marginTop: 24,
     backgroundColor: '#f6f6f6',
   },
   btnSend: {

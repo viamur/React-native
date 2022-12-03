@@ -9,7 +9,7 @@ import img from '../assets/icon.png';
 const ItemPost = ({ navigation, data }) => {
   return (
     <View style={styles.container}>
-      <Image style={styles.image} resizeMode={'cover'} source={data.photo} />
+      <Image style={styles.image} resizeMode={'cover'} source={{ uri: data.photo }} />
       <Text style={styles.title}>{data.title}</Text>
       <View style={styles.bottomBlock}>
         <View style={styles.iconBlock}>
