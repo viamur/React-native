@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 import * as Font from 'expo-font';
 import { Dimensions, StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import LoginScreen from './Screens/LoginScreen';
-import RegistrationScreen from './Screens/RegistrationScreen';
-import CreatePostsScreen from './Screens/CreatePostsScreen';
-import ProfileScreen from './Screens/ProfileScreen';
-import PostsScreen from './Screens/PostsScreen';
-import Home from './Screens/Home';
 import useRoute from './router';
+import store from './redux/store';
+
+// del
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase/config';
 
 /* Переменная Font дает нас возможность загрузить шрифты в асинхронном режиме в наше приложение. 
     Создаем функцию которая будет загружать шрифты */
@@ -35,6 +33,24 @@ export default function App() {
   const routing = useRoute();
 
   // useEffect(() => {
+  //   createUserWithEmailAndPassword(auth, 'Via@gmail.com', 'Viam2022')
+  //     .then(userCredential => {
+  //       // Signed in
+  //       // const user = userCredential.user;
+  //       console.warn('userCredential', userCredential);
+
+  //       // ...
+  //     })
+  //     .catch(error => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+
+  //       console.warn('errorMessage errorCode', errorMessage, errorCode);
+  //       // ..
+  //     });
+  // }, []);
+
+  // useEffect(() => {
   //   const onChange = () => {
   //     const width = Dimensions.get('window').width - 20 * 2;
   //     setDimensions(width);
@@ -52,11 +68,11 @@ export default function App() {
   }
 
   return (
-    <>
+    <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>{routing}</NavigationContainer>
       </SafeAreaProvider>
       <StatusBar barStyle="dark-content" />
-    </>
+    </Provider>
   );
 }

@@ -9,12 +9,14 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import BgImage from '../components/BgImage';
 import BtnSubmit from '../components/BtnSubmit';
 import InputAvatar from '../components/InputAvatar';
 import InputDefault from '../components/InputDefault';
 import InputPassword from '../components/InputPassword';
 import TextTitle from '../components/TextTitle';
+import { authSignUp } from '../redux/auth/authOperations';
 
 /* ImageBackground */
 const bgImage = require('../assets/images/bgAuth.jpeg');
@@ -27,6 +29,7 @@ const RegistrationScreen = ({ setIsAuth }) => {
   const [isShowKeyboard, isSetShowKeyboard] = useState(false);
   const [nameActiveInput, setNameActiveInput] = useState('');
   const { navigate } = useNavigation();
+  const dispatch = useDispatch();
 
   const handleActive = (focus, name) => {
     if (focus === 'onFocus') {
@@ -49,6 +52,7 @@ const RegistrationScreen = ({ setIsAuth }) => {
 
   const handleSubmit = () => {
     console.log({ login, email, password });
+    dispatch(authSignUp({ login, email, password }));
 
     setLogin('');
     setEmail('');
