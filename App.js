@@ -33,24 +33,6 @@ export default function App() {
   const routing = useRoute();
 
   // useEffect(() => {
-  //   createUserWithEmailAndPassword(auth, 'Via@gmail.com', 'Viam2022')
-  //     .then(userCredential => {
-  //       // Signed in
-  //       // const user = userCredential.user;
-  //       console.warn('userCredential', userCredential);
-
-  //       // ...
-  //     })
-  //     .catch(error => {
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-
-  //       console.warn('errorMessage errorCode', errorMessage, errorCode);
-  //       // ..
-  //     });
-  // }, []);
-
-  // useEffect(() => {
   //   const onChange = () => {
   //     const width = Dimensions.get('window').width - 20 * 2;
   //     setDimensions(width);

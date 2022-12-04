@@ -52,17 +52,22 @@ const RegistrationScreen = ({ setIsAuth }) => {
 
   const handleSubmit = () => {
     console.log({ login, email, password });
-    dispatch(authSignUp({ login, email, password }));
+    dispatch(authSignUp({ login, email, password })).then(res => {
+      // if error to show alert
+      if (res.error) {
+        return alert(res.payload);
+      }
 
-    setLogin('');
-    setEmail('');
-    setPassword('');
-    setNameActiveInput('');
-    handleUseKeyboard();
+      setLogin('');
+      setEmail('');
+      setPassword('');
+      setNameActiveInput('');
+      handleUseKeyboard();
 
-    // перебрасывает на home
-    // navigation.navigate('Home');
-    setIsAuth(true);
+      // перебрасывает на home
+      // navigation.navigate('Home');
+      setIsAuth(true);
+    });
   };
 
   return (

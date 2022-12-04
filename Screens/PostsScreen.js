@@ -2,9 +2,6 @@ import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-nativ
 import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
 
-//del
-// const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
-
 const PostsScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>

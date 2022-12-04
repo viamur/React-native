@@ -1,19 +1,21 @@
+import { useEffect, useState } from 'react';
+import { Button, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useNavigation, TabRouter } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { authSignOut } from '../redux/auth/authOperations';
 
 import CreatePostsScreen from './CreatePostsScreen';
 import ProfileScreen from './ProfileScreen';
 import PostsScreen from './PostsScreen';
-import { Button, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useNavigation, TabRouter } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+
+import { Feather, MaterialIcons, AntDesign } from '@expo/vector-icons';
 
 const MainTab = createBottomTabNavigator();
 
 const Home = ({}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
@@ -24,7 +26,7 @@ const Home = ({}) => {
           title: 'Публикации',
           headerTitleStyle: styles.headerTitle,
           headerRight: () => (
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => dispatch(authSignOut())}>
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),

@@ -1,15 +1,25 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { getUserEmail, getUserName, getUserPhoto } from '../redux/auth/authSelectors';
 
 //del
-import img from '../assets/icon.png';
+import img from '../assets/images/defaultUserPhoto.png';
 
 const ProfilePost = () => {
+  const name = useSelector(getUserName);
+  const email = useSelector(getUserEmail);
+  const photo = useSelector(getUserPhoto);
+
   return (
     <View style={styles.profile}>
-      <Image style={styles.profileImage} resizeMode={'cover'} source={img} />
+      <Image
+        style={styles.profileImage}
+        resizeMode={'cover'}
+        source={photo ? { uri: photo } : img}
+      />
       <View>
-        <Text style={styles.profileName}>Natali Romanova</Text>
-        <Text style={styles.profileEmail}>email@example.com</Text>
+        <Text style={styles.profileName}>{name}</Text>
+        <Text style={styles.profileEmail}>{email}</Text>
       </View>
     </View>
   );

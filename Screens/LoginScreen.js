@@ -9,11 +9,13 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 import BgImage from '../components/BgImage';
 import BtnSubmit from '../components/BtnSubmit';
 import InputDefault from '../components/InputDefault';
 import InputPassword from '../components/InputPassword';
 import TextTitle from '../components/TextTitle';
+import { authSignIn } from '../redux/auth/authOperations';
 
 const LoginScreen = ({ setIsAuth }) => {
   const [email, setEmail] = useState('');
@@ -22,6 +24,7 @@ const LoginScreen = ({ setIsAuth }) => {
   const [isShowKeyboard, isSetShowKeyboard] = useState(false);
   const [nameActiveInput, setNameActiveInput] = useState('');
   const { navigate } = useNavigation();
+  const dispatch = useDispatch();
 
   const handleActive = (focus, name) => {
     if (focus === 'onFocus') {
@@ -40,15 +43,18 @@ const LoginScreen = ({ setIsAuth }) => {
   };
 
   const handleSubmit = () => {
-    console.log({ email, password });
+    dispatch(authSignIn({ email, password })).then(res => {
+      if (res.error) {
+        return alert(res.payload);
+      }
+      setEmail('');
+      setPassword('');
+      setNameActiveInput('');
+      handleUseKeyboard();
 
-    setEmail('');
-    setPassword('');
-    setNameActiveInput('');
-    handleUseKeyboard();
-
-    // перебрасывает на home
-    setIsAuth(true);
+      // перебрасывает на home
+      setIsAuth(true);
+    });
   };
 
   return (

@@ -1,8 +1,13 @@
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+
 import BgImage from '../components/BgImage';
 import InputAvatar from '../components/InputAvatar';
 import ItemPost from '../components/ItemPost';
+
+import { getUserName } from '../redux/auth/authSelectors';
+import { authSignOut } from '../redux/auth/authOperations';
 
 //icon
 import { MaterialIcons } from '@expo/vector-icons';
@@ -11,20 +16,22 @@ import { MaterialIcons } from '@expo/vector-icons';
 const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
 const ProfileScreen = ({ navigation, setIsAuth }) => {
+  const name = useSelector(getUserName);
+  const dispatch = useDispatch();
   return (
     <BgImage>
       <ScrollView>
         <SafeAreaView style={{ paddingTop: 100 }}>
           <View style={styles.container}>
             <InputAvatar />
-            <Text style={styles.userName}>Natali Romanova</Text>
-            <FlatList
-              data={data}
-              style={{ width: '100%' }}
-              renderItem={({ item }) => <ItemPost data={item} navigation={navigation} />}
-              keyExtractor={item => item.id}
-            />
-            <TouchableOpacity onPress={() => setIsAuth(false)} style={styles.logout}>
+            <Text style={styles.userName}>{name}</Text>
+            <View style={{ width: '100%' }} >
+
+              {data.map(el => {
+                return <ItemPost key={el.id} data={el} navigation={navigation} />
+              })}
+            </View>
+            <TouchableOpacity onPress={() => dispatch(authSignOut())} style={styles.logout}>
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           </View>

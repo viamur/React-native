@@ -1,17 +1,25 @@
 import { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { getUserEmail, getUserId } from './redux/auth/authSelectors';
 import Home from './Screens/Home';
 import LoginScreen from './Screens/LoginScreen';
 import RegistrationScreen from './Screens/RegistrationScreen';
 import CommentsScreen from './Screens/CommentsScreen';
 import MapScreen from './Screens/MapScreen';
 import { AntDesign } from '@expo/vector-icons';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase/config';
 
 const RootStack = createStackNavigator();
 
 const useRoute = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(null);
+
+  onAuthStateChanged(auth, (user) => {
+    setIsAuth(user)
+  })
 
   return (
     <RootStack.Navigator>
@@ -20,21 +28,17 @@ const useRoute = () => {
           <>
             <RootStack.Screen
               name="Registration"
-              component={() => <RegistrationScreen setIsAuth={setIsAuth} />}
+              component={RegistrationScreen}
               options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="Login"
-              component={() => <LoginScreen setIsAuth={setIsAuth} />}
+              component={LoginScreen}
               options={{ headerShown: false }}
             />
           </>
         ) : (
-          <RootStack.Screen
-            name="Home"
-            component={() => <Home setIsAuth={setIsAuth} />}
-            options={{ headerShown: false }}
-          />
+          <RootStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         )}
       </RootStack.Group>
       <RootStack.Group screenOptions={{ presentation: 'card' }}>
