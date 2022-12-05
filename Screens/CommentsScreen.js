@@ -1,14 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -18,67 +15,37 @@ import {
 // icon
 import { AntDesign } from '@expo/vector-icons';
 
-// del
-import img from '../assets/icon.png';
 import ItemComment from '../components/ItemComment';
-const userId = 1;
-const data = {
-  id: 1,
-  photo: img,
-  comments: [
-    {
-      id: 1,
-      user: {
-        userId: 2,
-        avatar: img,
-      },
-      date: Date.now(),
-      comment:
-        'Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!',
-    },
-    {
-      id: 2,
-      user: {
-        userId: 1,
-        avatar: img,
-      },
-      date: Date.now(),
-      comment:
-        'A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.',
-    },
-    {
-      id: 3,
-      user: {
-        userId: 2,
-        avatar: img,
-      },
-      date: Date.now(),
-      comment: 'Thank you! That was very helpful!.',
-    },
-    {
-      id: 4,
-      user: {
-        userId: 2,
-        avatar: img,
-      },
-      date: Date.now(),
-      comment: 'Thank you! That was very helpful!.',
-    },
-    {
-      id: 5,
-      user: {
-        userId: 2,
-        avatar: img,
-      },
-      date: Date.now(),
-      comment: 'Thank you! That was very helpful!.',
-    },
-  ],
-};
+import { useSelector } from 'react-redux';
+import { getUserId, getUserName, getUserPhoto } from '../redux/auth/authSelectors';
+import { addDoc, collection, doc, onSnapshot, updateDoc, where, increment } from 'firebase/firestore';
+import { db } from '../firebase/config';
+import { query } from 'firebase/database';
+
 
 const CommentsScreen = ({ navigation, route }) => {
   const [comment, setComment] = useState('');
+  const [allComment, setAllComment] = useState([]);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+
+  const userId = useSelector(getUserId);
+  const userName = useSelector(getUserName);
+  const userPhoto = useSelector(getUserPhoto);
+
+  const { photo, id } = route.params;
+
+  useEffect(() => {
+    getAllComment()
+  }, [])
+
+  const getAllComment = async () => {
+    const q = query(collection(db, "comments"), where("postId", "==", id));
+
+    onSnapshot(q, (doc) => {
+      const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }));
+      setAllComment(postsArray);
+    });
+  }
 
   const handleCloseKeyboard = () => {
     if (isOpenKeyboard) {
@@ -86,6 +53,33 @@ const CommentsScreen = ({ navigation, route }) => {
       setIsOpenKeyboard(false);
     }
   };
+
+  const handleSubmit = async () => {
+    if (comment.length < 2) {
+      return alert('Комментарий должен быть больше 1го символа')
+    }
+    try {
+      await addDoc(collection(db, "comments"), {
+        postId: id,
+        user: {
+          id: userId,
+          name: userName,
+          photo: userPhoto,
+        },
+        comment,
+        date: Date.now()
+      });
+
+      // у user добовляем количество комментариев
+      await updateDoc(doc(db, "posts", id), {
+        comment: increment(1)
+      });
+
+      setComment('')
+    } catch (error) {
+      console.warn('commentError', error)
+    }
+  }
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset={60}
@@ -94,9 +88,9 @@ const CommentsScreen = ({ navigation, route }) => {
       <View style={styles.container}>
         <TouchableWithoutFeedback disabled={!isOpenKeyboard} onPress={handleCloseKeyboard}>
           <View style={{ flex: 1 }}>
-            <Image source={data.photo} resizeMode="cover" style={styles.image} />
+            <Image source={{ uri: photo }} resizeMode="cover" style={styles.image} />
             <FlatList
-              data={data.comments}
+              data={allComment.sort((a, b) => a.date - b.date)}
               style={{ flex: 1 }}
               // item={{ paddingBottom: 24 }}
               renderItem={({ item }) => <ItemComment userId={userId} data={item} />}
@@ -113,7 +107,7 @@ const CommentsScreen = ({ navigation, route }) => {
             onFocus={() => setIsOpenKeyboard(true)}
             onChangeText={text => setComment(text)}
           />
-          <TouchableOpacity style={styles.btnSend}>
+          <TouchableOpacity style={styles.btnSend} onPress={handleSubmit}>
             <AntDesign name="arrowup" size={20} color="white" />
           </TouchableOpacity>
         </View>

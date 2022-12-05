@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import * as Font from 'expo-font';
-import { Dimensions, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Main from './components/Main'
 
-import useRoute from './router';
 import store from './redux/store';
-
-// del
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase/config';
 
 /* Переменная Font дает нас возможность загрузить шрифты в асинхронном режиме в наше приложение. 
     Создаем функцию которая будет загружать шрифты */
@@ -23,14 +18,9 @@ const loadFonts = async () => {
   });
 };
 
-// const AuthStack = createStackNavigator();
-// const MainTab = createBottomTabNavigator();
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
-  const [dimensions, setDimensions] = useState(Dimensions.get('window').width - 20 * 2);
-
-  const routing = useRoute();
 
   // useEffect(() => {
   //   const onChange = () => {
@@ -52,7 +42,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <NavigationContainer>{routing}</NavigationContainer>
+        <Main />
       </SafeAreaProvider>
       <StatusBar barStyle="dark-content" />
     </Provider>

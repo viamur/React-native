@@ -14,12 +14,7 @@ import { auth } from './firebase/config';
 
 const RootStack = createStackNavigator();
 
-const useRoute = () => {
-  const [isAuth, setIsAuth] = useState(null);
-
-  onAuthStateChanged(auth, (user) => {
-    setIsAuth(user)
-  })
+const useRoute = ({ isAuth }) => {
 
   return (
     <RootStack.Navigator>

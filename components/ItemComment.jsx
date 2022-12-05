@@ -3,21 +3,29 @@ import { getDate } from '../utils/convertDate';
 
 const ItemComment = ({ userId, data }) => {
   // check is owner this comment user
-  const isOwner = userId == data.user.userId;
+  const isOwner = userId == data.user.id;
 
   // convert date in 09 июня, 2020 | 09:14
   const date = getDate(data.date);
 
   return (
     <View style={{ ...styles.container, flexDirection: isOwner ? 'row-reverse' : 'row' }}>
-      <Image
-        source={data.user.avatar}
-        style={{
-          ...styles.image,
-          marginRight: isOwner ? 0 : 16,
-          marginLeft: isOwner ? 16 : 0,
-        }}
-      />
+      {data.user.photo ? (
+        <Image
+          source={data.user.photo}
+          style={{
+            ...styles.image,
+            marginRight: isOwner ? 0 : 16,
+            marginLeft: isOwner ? 16 : 0,
+          }}
+        />
+      ) : (
+        <View
+          style={{ ...styles.noImage, marginRight: isOwner ? 0 : 16, marginLeft: isOwner ? 16 : 0 }}
+        >
+          <Text style={styles.noImageText}>{data.user.name.slice(0, 1)}</Text>
+        </View>
+      )}
       <View
         style={{
           ...styles.wrap,
@@ -25,7 +33,10 @@ const ItemComment = ({ userId, data }) => {
           borderTopRightRadius: isOwner ? 0 : 6,
         }}
       >
-        <Text style={styles.comment}>{data.comment}</Text>
+        <Text style={styles.comment}>
+          <Text style={styles.userName}>{data.user.name}: </Text>
+          {data.comment}
+        </Text>
         <Text style={{ ...styles.date, textAlign: isOwner ? 'left' : 'right' }}>{date}</Text>
       </View>
     </View>
@@ -45,6 +56,21 @@ const styles = StyleSheet.create({
 
     borderRadius: '50%',
   },
+  noImage: {
+    width: 28,
+    height: 28,
+
+    borderRadius: '50%',
+    backgroundColor: '#FF6C00',
+
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noImageText: {
+    color: '#fff',
+    textTransform: 'uppercase',
+    fontSize: 12,
+  },
   wrap: {
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderRadius: 6,
@@ -60,6 +86,14 @@ const styles = StyleSheet.create({
     color: '#212121',
 
     marginBottom: 8,
+  },
+  userName: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 1,
+
+    color: '#bdbdbd',
   },
   date: {
     fontFamily: 'Roboto-Regular',

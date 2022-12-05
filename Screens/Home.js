@@ -13,7 +13,7 @@ import { Feather, MaterialIcons, AntDesign } from '@expo/vector-icons';
 
 const MainTab = createBottomTabNavigator();
 
-const Home = ({}) => {
+const Home = ({ }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ const Home = ({}) => {
           headerLeftContainerStyle: styles.headerLeft,
           headerRightContainerStyle: styles.headerRight,
           tabBarIcon: ({ focused, size, color }) => {
-            return <Feather name="grid" size={size} color={'rgba(33, 33, 33, 0.8)'} />;
+            return <Feather name="grid" size={size} color={focused ? '#FF6C00' : 'rgba(33, 33, 33, 0.8)'} />;
           },
           // headerShadowVisible: false,  убирает стандраное нижний бордер в хедере
           // tabBarBadge: 3, это как значек(типо не прочитанные сообщение и тд)
@@ -68,7 +68,7 @@ const Home = ({}) => {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused, size, color }) => {
-            return <Feather name="user" size={size} color={'rgba(33, 33, 33, 0.8)'} />;
+            return <Feather name="user" size={size} color={focused ? '#FF6C00' : 'rgba(33, 33, 33, 0.8)'} />;
           },
         }}
       />

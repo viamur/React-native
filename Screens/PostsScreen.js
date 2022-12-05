@@ -1,17 +1,34 @@
+
+import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
+import { db } from '../firebase/config';
 
 const PostsScreen = ({ navigation, route }) => {
+  const [posts, setPosts] = useState([]);
+
+  const getAllPost = async () => {
+    onSnapshot(collection(db, 'posts'), (doc) => {
+      const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }))
+      setPosts(postsArray)
+    })
+  }
+
+  useEffect(() => {
+    getAllPost()
+  }, []);
+
   return (
     <View style={styles.container}>
       <ProfilePost />
       {/* <ScrollView style={styles.scrollView}> */}
       <FlatList
-        data={route.params}
+        data={posts}
         style={{ width: '100%', marginTop: 32 }}
         renderItem={({ item }) => <ItemPost data={item} navigation={navigation} />}
-        keyExtractor={(item, idx) => idx}
+        keyExtractor={(item, idx) => idx.toString()}
       />
       {/* </ScrollView> */}
     </View>

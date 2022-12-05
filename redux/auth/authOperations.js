@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 
@@ -60,4 +61,42 @@ export const authSignOut = createAsyncThunk('auth/SignOut', async (userData, thu
   } catch (error) {
     return thunkApi.rejectWithValue(error.message);
   }
+});
+
+/* =============================STATE UPDATE============================= */
+
+export const authStateChangedUser = createAsyncThunk('auth/StateChangedUser', async (userData, thunkApi) => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      if (user) {
+        resolve({
+          userId: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          isAuth: true,
+        });
+      } else {
+        reject({
+          userId: "",
+          name: "",
+          email: "",
+          photo: "",
+          isAuth: false,
+        });
+      }
+    });
+  });
+
+
+
+
+  // try {
+  //   const res = onAuthStateChanged();
+  //   console.warn('======authStateChangedUser=========', res);
+  //   return res;
+  // } catch (error) {
+  //   return thunkApi.rejectWithValue(error.message);
+  // }
 });

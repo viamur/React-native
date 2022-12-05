@@ -16,7 +16,7 @@ const ItemPost = ({ navigation, data }) => {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.iconBlock}
-            onPress={() => navigation.navigate('Comment', { photo: data.photo })}
+            onPress={() => navigation.navigate('Comment', { photo: data.photo, id: data.id })}
           >
             {data.comment < 1 ? (
               <FontAwesome name="comment-o" style={styles.icon} size={18} color="#BDBDBD" />

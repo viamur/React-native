@@ -25,7 +25,7 @@ const MapScreen = ({ navigation, route: { params } }) => {
         style={{ flex: 1 }}
         region={params.coordinate.coords}
         mapType="standard"
-        minZoomLevel={15}
+        minZoomLevel={12}
       >
         <Marker
           title={params.nameLocation}

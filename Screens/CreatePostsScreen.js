@@ -13,6 +13,8 @@ import {
   View,
 } from 'react-native';
 import { useEffect, useState } from 'react';
+import { collection, addDoc } from "firebase/firestore";
+import { db } from '../firebase/config'
 
 // expo modul
 import { Camera, CameraType } from 'expo-camera';
@@ -21,9 +23,12 @@ import * as Location from 'expo-location';
 
 // components
 import BtnSubmit from '../components/BtnSubmit';
+import uploadFile from '../utils/uploadFile'
 
 //icon
 import { SimpleLineIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { getUserId } from '../redux/auth/authSelectors';
 
 const CreatePostsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
@@ -35,6 +40,9 @@ const CreatePostsScreen = ({ navigation }) => {
   const [idPhoto, setIdPhoto] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [cameraOn, setCameraOn] = useState(false);
+
+  // selector
+  const userId = useSelector(getUserId);
 
   // usePermissions
   const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -65,7 +73,7 @@ const CreatePostsScreen = ({ navigation }) => {
       if (cameraRef) {
         /* Make photo and take uri */
         const { uri } = await cameraRef.takePictureAsync();
-        /* Save in phone library */
+        /* Save photo in library */
         const { id } = await MediaLibrary.createAssetAsync(uri);
         setIdPhoto(id);
         return setPhoto(uri);
@@ -85,14 +93,21 @@ const CreatePostsScreen = ({ navigation }) => {
       // const coordinate = await Location.getCurrentPositionAsync({}); //очень долго ждать геопозицию
       const coordinate = await Location.getLastKnownPositionAsync(); // берет последнию геопозицию с памяти
 
+
+      const imageURL = await uploadFile({ path: 'postImage', photo })
+
       const data = {
-        photo,
         title,
+        photo: imageURL,
         nameLocation,
         coordinate,
-        like: 0,
+        like: [],
         comment: 0,
+        userId,
       };
+
+      const { id } = await addDoc(collection(db, "posts"), data);
+
       navigation.navigate('Posts', [data]);
       setIdPhoto(null);
       setPhoto(null);
