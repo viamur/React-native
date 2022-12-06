@@ -5,8 +5,10 @@ const uploadFile = async ({ path, photo }) => {
     try {
         // получаем путь
         const response = await fetch(photo);
+        console.log(photo)
         // переводим в формат другой для отправки
         const file = await response.blob();
+
 
         // делаем уникальный id
         const uniqueId = Date.now().toString()

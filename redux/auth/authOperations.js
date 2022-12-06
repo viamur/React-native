@@ -9,15 +9,19 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import uploadFile from '../../utils/uploadFile';
 
 /* =============================REGISTRATION============================= */
 export const authSignUp = createAsyncThunk('auth/SignUp', async (userData, thunkApi) => {
   try {
-    const { login, email, password } = userData;
+    const { login, image, email, password } = userData;
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
+
+    const imageURL = image ? await uploadFile({ path: 'avatarImage', photo: image }) : null;
 
     await updateProfile(user, {
       displayName: login,
+      photoURL: imageURL
     });
 
     //   email, uid, displayName

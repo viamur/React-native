@@ -14,21 +14,22 @@ import {
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import { collection, addDoc } from "firebase/firestore";
+import { useSelector } from 'react-redux';
 import { db } from '../firebase/config'
 
 // expo modul
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 // components
 import BtnSubmit from '../components/BtnSubmit';
 import uploadFile from '../utils/uploadFile'
+import { getUserId } from '../redux/auth/authSelectors';
 
 //icon
 import { SimpleLineIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
-import { getUserId } from '../redux/auth/authSelectors';
 
 const CreatePostsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
@@ -73,11 +74,19 @@ const CreatePostsScreen = ({ navigation }) => {
       if (cameraRef) {
         /* Make photo and take uri */
         const { uri } = await cameraRef.takePictureAsync();
+
+        const manipResult = await manipulateAsync(
+          uri,
+          [{ resize: { width: 640, height: 480 } }],
+          { format: SaveFormat.JPEG }
+        );
+
         /* Save photo in library */
-        const { id } = await MediaLibrary.createAssetAsync(uri);
+        const { id } = await MediaLibrary.createAssetAsync(manipResult.uri);
         setIdPhoto(id);
-        return setPhoto(uri);
+        return setPhoto(manipResult.uri);
       }
+
       const res = await MediaLibrary.deleteAssetsAsync(idPhoto);
       if (res) {
         setIdPhoto(null);

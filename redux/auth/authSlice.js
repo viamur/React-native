@@ -62,6 +62,11 @@ const authSlice = createSlice({
       state.error = payload;
     },
     [authSignOut.pending]: state => {
+      state.id = null;
+      state.email = null;
+      state.name = null;
+      state.photo = null;
+      state.isAuth = false;
       state.isLoading = true;
       state.error = null;
     },

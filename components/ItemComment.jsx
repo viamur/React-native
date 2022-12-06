@@ -12,7 +12,8 @@ const ItemComment = ({ userId, data }) => {
     <View style={{ ...styles.container, flexDirection: isOwner ? 'row-reverse' : 'row' }}>
       {data.user.photo ? (
         <Image
-          source={data.user.photo}
+          source={{ uri: data.user.photo }}
+          resizeMode="cover"
           style={{
             ...styles.image,
             marginRight: isOwner ? 0 : 16,

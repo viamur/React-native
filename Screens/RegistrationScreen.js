@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import {
   ImageBackground,
@@ -17,14 +18,16 @@ import InputDefault from '../components/InputDefault';
 import InputPassword from '../components/InputPassword';
 import TextTitle from '../components/TextTitle';
 import { authSignUp } from '../redux/auth/authOperations';
+import uploadFile from '../utils/uploadFile';
 
 /* ImageBackground */
 const bgImage = require('../assets/images/bgAuth.jpeg');
 
-const RegistrationScreen = ({ setIsAuth }) => {
+const RegistrationScreen = ({ }) => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [image, setImage] = useState(null);
 
   const [isShowKeyboard, isSetShowKeyboard] = useState(false);
   const [nameActiveInput, setNameActiveInput] = useState('');
@@ -50,9 +53,9 @@ const RegistrationScreen = ({ setIsAuth }) => {
     Keyboard.dismiss();
   };
 
-  const handleSubmit = () => {
-    console.log({ login, email, password });
-    dispatch(authSignUp({ login, email, password })).then(res => {
+  const handleSubmit = async () => {
+
+    dispatch(authSignUp({ login, image, email, password })).then(res => {
       // if error to show alert
       if (res.error) {
         return alert(res.payload);
@@ -60,14 +63,16 @@ const RegistrationScreen = ({ setIsAuth }) => {
 
       setLogin('');
       setEmail('');
+      setImage(null);
       setPassword('');
       setNameActiveInput('');
       handleUseKeyboard();
 
       // перебрасывает на home
       // navigation.navigate('Home');
-      setIsAuth(true);
+      // setIsAuth(true);
     });
+
   };
 
   return (
@@ -80,7 +85,7 @@ const RegistrationScreen = ({ setIsAuth }) => {
               paddingBottom: isShowKeyboard ? (Platform.OS == 'ios' ? 230 : 32) : 45,
             }}
           >
-            <InputAvatar />
+            <InputAvatar image={image} setImage={setImage} />
             <TextTitle title="Регестрация" />
             <InputDefault
               nameActiveInput={nameActiveInput}

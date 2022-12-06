@@ -12,17 +12,19 @@ import { authSignOut } from '../redux/auth/authOperations';
 //icon
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { db } from '../firebase/config';
+import { auth, db } from '../firebase/config';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import uploadFile from '../utils/uploadFile';
+import { updateProfile } from 'firebase/auth';
 
-//del
-const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
 const ProfileScreen = ({ navigation, setIsAuth }) => {
   const [posts, setPosts] = useState([])
+  const [image, setImage] = useState(useSelector(getUserPhoto));
 
   const userName = useSelector(getUserName);
   const userId = useSelector(getUserId);
+  const photo = useSelector(getUserPhoto)
 
   const dispatch = useDispatch();
 
@@ -33,19 +35,39 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }));
       setPosts(postsArray);
     });
+  };
+
+  const updateAvatarUser = async () => {
+    try {
+      const imageURL = await uploadFile({ path: 'avatarImage', photo: image });
+      const user = auth.currentUser;
+      await updateProfile(user, {
+        photoURL: imageURL,
+      })
+      console.log('useEffect uploadFile imageURL user', imageURL, user)
+    } catch (error) {
+      console.log('updateAvatarUser Error', error)
+    }
   }
 
   useEffect(() => {
     getAllPosts();
-  }, [])
+  }, []);
 
+
+  useEffect(() => {
+    if (photo !== image) {
+      updateAvatarUser();
+    }
+
+  }, [image])
 
   return (
     <BgImage>
       <ScrollView>
         <SafeAreaView style={{ paddingTop: 100 }}>
           <View style={styles.container}>
-            <InputAvatar />
+            <InputAvatar image={image} setImage={setImage} />
             <Text style={styles.userName}>{userName}</Text>
             <View style={{ width: '100%' }} >
 
