@@ -5,8 +5,39 @@ import { SimpleLineIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 
 //del
 import img from '../assets/icon.png';
+import { useSelector } from 'react-redux';
+import { getUserId } from '../redux/auth/authSelectors';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase/config';
 
 const ItemPost = ({ navigation, data }) => {
+  const userId = useSelector(getUserId);
+
+  const handleLikePost = async () => {
+    try {
+      // docRef
+      const docRef = doc(db, 'posts', data.id);
+
+      // data.like []
+      const res = data.like.some(el => el == userId);
+
+      // если человек лайкнул то убираем его из массива
+      if (res) {
+        const filterArray = data.like.filter(el => el !== userId);
+        await updateDoc(docRef, {
+          like: [...filterArray],
+        });
+        return;
+      }
+
+      // если лайка нет то добовляем
+      await updateDoc(docRef, {
+        like: [...data.like, userId],
+      });
+    } catch (error) {
+      console.log('handleLikePost', error);
+    }
+  };
   return (
     <View style={styles.container}>
       <Image style={styles.image} resizeMode={'cover'} source={{ uri: data.photo }} />
@@ -27,13 +58,15 @@ const ItemPost = ({ navigation, data }) => {
               {data.comment}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.iconBlock}>
-            {false ? (
-              <AntDesign name="like2" style={styles.icon} size={18} color="#FF6C00" />
-            ) : (
+          <TouchableOpacity activeOpacity={0.7} style={styles.iconBlock} onPress={handleLikePost}>
+            {data.like.some(el => el == userId) ? (
               <AntDesign name="like1" style={styles.icon} size={18} color="#FF6C00" />
+            ) : (
+              <AntDesign name="like2" style={styles.icon} size={18} color="#FF6C00" />
             )}
-            <Text style={false ? styles.countComment : styles.countCommentAccent}>{data.like}</Text>
+            <Text style={false ? styles.countComment : styles.countCommentAccent}>
+              {data.like.length}
+            </Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity

@@ -6,28 +6,50 @@ import BgImage from '../components/BgImage';
 import InputAvatar from '../components/InputAvatar';
 import ItemPost from '../components/ItemPost';
 
-import { getUserName } from '../redux/auth/authSelectors';
+import { getUserId, getUserName, getUserPhoto } from '../redux/auth/authSelectors';
 import { authSignOut } from '../redux/auth/authOperations';
 
 //icon
 import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import { db } from '../firebase/config';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 
 //del
 const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
 const ProfileScreen = ({ navigation, setIsAuth }) => {
-  const name = useSelector(getUserName);
+  const [posts, setPosts] = useState([])
+
+  const userName = useSelector(getUserName);
+  const userId = useSelector(getUserId);
+
   const dispatch = useDispatch();
+
+  const getAllPosts = async () => {
+    const q = query(collection(db, "posts"), where("userId", "==", userId));
+
+    onSnapshot(q, (doc) => {
+      const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }));
+      setPosts(postsArray);
+    });
+  }
+
+  useEffect(() => {
+    getAllPosts();
+  }, [])
+
+
   return (
     <BgImage>
       <ScrollView>
         <SafeAreaView style={{ paddingTop: 100 }}>
           <View style={styles.container}>
             <InputAvatar />
-            <Text style={styles.userName}>{name}</Text>
+            <Text style={styles.userName}>{userName}</Text>
             <View style={{ width: '100%' }} >
 
-              {data.map(el => {
+              {posts.map(el => {
                 return <ItemPost key={el.id} data={el} navigation={navigation} />
               })}
             </View>
@@ -43,7 +65,7 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    height: '100%',
+    minHeight: '200%',
     paddingTop: 90,
     paddingHorizontal: 16,
     position: 'relative',

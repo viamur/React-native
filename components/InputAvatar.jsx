@@ -1,7 +1,11 @@
 import { StyleSheet, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { getUserPhoto } from '../redux/auth/authSelectors';
 
 const InputAvatar = ({}) => {
+  const userPhoto = useSelector(getUserPhoto);
+
   return (
     <View style={styles.inputAvatar}>
       <AntDesign name="pluscircleo" size={24} color="#FF6C00" style={styles.inputAvatarIcon} />
