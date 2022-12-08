@@ -17,7 +17,7 @@ export const authSignUp = createAsyncThunk('auth/SignUp', async (userData, thunk
     const { login, image, email, password } = userData;
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
-    const imageURL = image ? await uploadFile({ path: 'avatarImage', photo: image }) : null;
+    const imageURL = image ? await uploadFile({ path: 'avatarImage', photo: image, name: user.uid }) : null;
 
     await updateProfile(user, {
       displayName: login,
@@ -59,9 +59,8 @@ export const authSignIn = createAsyncThunk('auth/SignIn', async (userData, thunk
 
 export const authSignOut = createAsyncThunk('auth/SignOut', async (userData, thunkApi) => {
   try {
-    const res = await signOut(auth);
-    console.log('authSignOut', res);
-    return res;
+    await signOut(auth);
+    return;
   } catch (error) {
     return thunkApi.rejectWithValue(error.message);
   }

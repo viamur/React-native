@@ -16,6 +16,11 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {
+    updateAvatar(state, { payload }) {
+      state.photo = payload;
+    }
+  },
   extraReducers: {
     [authSignUp.pending]: state => {
       state.isLoading = true;
@@ -112,4 +117,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { updateAvatar } = authSlice.actions
 export default authSlice.reducer;

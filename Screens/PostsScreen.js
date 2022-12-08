@@ -6,11 +6,14 @@ import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
 import { db } from '../firebase/config';
 
+
 const PostsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
 
+  let listenersPosts;
+
   const getAllPost = async () => {
-    onSnapshot(collection(db, 'posts'), (doc) => {
+    listenersPosts = onSnapshot(collection(db, 'posts'), (doc) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }))
       setPosts(postsArray)
     })
@@ -18,6 +21,7 @@ const PostsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     getAllPost()
+    return () => listenersPosts();
   }, []);
 
   return (

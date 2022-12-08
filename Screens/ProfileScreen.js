@@ -16,6 +16,7 @@ import { auth, db } from '../firebase/config';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import uploadFile from '../utils/uploadFile';
 import { updateProfile } from 'firebase/auth';
+import { updateAvatar } from '../redux/auth/authSlice';
 
 
 const ProfileScreen = ({ navigation, setIsAuth }) => {
@@ -27,11 +28,12 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
   const photo = useSelector(getUserPhoto)
 
   const dispatch = useDispatch();
+  let listenersProfile;
 
   const getAllPosts = async () => {
     const q = query(collection(db, "posts"), where("userId", "==", userId));
 
-    onSnapshot(q, (doc) => {
+    listenersProfile = onSnapshot(q, (doc) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }));
       setPosts(postsArray);
     });
@@ -39,11 +41,12 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
 
   const updateAvatarUser = async () => {
     try {
-      const imageURL = await uploadFile({ path: 'avatarImage', photo: image });
+      const imageURL = await uploadFile({ path: 'avatarImage', photo: image, name: userId });
       const user = auth.currentUser;
       await updateProfile(user, {
         photoURL: imageURL,
       })
+      dispatch(updateAvatar(imageURL))
       console.log('useEffect uploadFile imageURL user', imageURL, user)
     } catch (error) {
       console.log('updateAvatarUser Error', error)
@@ -52,6 +55,7 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
 
   useEffect(() => {
     getAllPosts();
+    return () => listenersProfile();
   }, []);
 
 

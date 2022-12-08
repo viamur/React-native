@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase/config";
 
-const uploadFile = async ({ path, photo }) => {
+const uploadFile = async ({ path, photo, name = false }) => {
     try {
         // получаем путь
         const response = await fetch(photo);
@@ -11,7 +11,7 @@ const uploadFile = async ({ path, photo }) => {
 
 
         // делаем уникальный id
-        const uniqueId = Date.now().toString()
+        const uniqueId = name ? name : Date.now().toString()
 
         const storageRef = ref(storage, `${path}/${uniqueId}`)
         // отправляем файл

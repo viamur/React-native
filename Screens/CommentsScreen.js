@@ -33,15 +33,18 @@ const CommentsScreen = ({ navigation, route }) => {
   const userPhoto = useSelector(getUserPhoto);
 
   const { photo, id } = route.params;
+  let listenerComments;
 
   useEffect(() => {
     getAllComment()
+
+    return () => listenerComments();
   }, [])
 
   const getAllComment = async () => {
     const q = query(collection(db, "comments"), where("postId", "==", id));
 
-    onSnapshot(q, (doc) => {
+    listenerComments = onSnapshot(q, (doc) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }));
       setAllComment(postsArray);
     });
