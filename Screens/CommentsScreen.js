@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Alert,
+  Vibration,
 } from 'react-native';
 
 // icon
@@ -57,7 +59,8 @@ const CommentsScreen = ({ navigation, route }) => {
 
   const handleSubmit = async () => {
     if (comment.length < 2) {
-      return alert('Комментарий должен быть больше 1го символа')
+      Vibration.vibrate()
+      return Alert.alert('Комментарий должен быть больше 1го символа')
     }
     try {
       await addDoc(collection(db, "comments"), {

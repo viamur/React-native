@@ -1,14 +1,23 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+import { getUserIsLoading } from '../redux/auth/authSelectors';
 
-const BtnSubmit = ({ title, onSubmit, disabled = false }) => {
+const BtnSubmit = ({ title, onSubmit, disabled = false, loading = false }) => {
+  const isLoading = useSelector(getUserIsLoading);
+  const loadBtn = isLoading || loading;
+
   return (
     <TouchableOpacity
-      disabled={disabled}
+      disabled={disabled || loadBtn}
       activeOpacity={0.8}
-      style={{ ...styles.btnSend, backgroundColor: disabled ? '#F6F6F6' : '#FF6C00' }}
+      style={{ ...styles.btnSend, backgroundColor: disabled || loadBtn ? '#F6F6F6' : '#FF6C00' }}
       onPress={onSubmit}
     >
-      <Text style={{ ...styles.btnSendText, color: disabled ? '#bdbdbd' : '#fff' }}>{title}</Text>
+      {loadBtn ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <Text style={{ ...styles.btnSendText, color: disabled ? '#bdbdbd' : '#fff' }}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };

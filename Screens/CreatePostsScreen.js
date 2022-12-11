@@ -35,6 +35,7 @@ const CreatePostsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [nameLocation, setNameLocation] = useState('');
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // useState work with camera
   const [photo, setPhoto] = useState(null);
@@ -99,6 +100,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const handleSubmitForm = async () => {
     try {
+      setIsLoading(true);
       // const coordinate = await Location.getCurrentPositionAsync({}); //очень долго ждать геопозицию
       const coordinate = await Location.getLastKnownPositionAsync(); // берет последнию геопозицию с памяти
 
@@ -117,11 +119,13 @@ const CreatePostsScreen = ({ navigation }) => {
 
       const { id } = await addDoc(collection(db, "posts"), data);
 
-      navigation.navigate('Posts', [data]);
+
+      navigation.navigate('Posts');
       setIdPhoto(null);
       setPhoto(null);
       setTitle('');
       setNameLocation('');
+      setIsLoading(false);
     } catch (error) {
       console.warn(error);
     }
@@ -219,6 +223,7 @@ const CreatePostsScreen = ({ navigation }) => {
               </TouchableOpacity>
               <BtnSubmit
                 title={'Опубликовать'}
+                loading={isLoading}
                 disabled={title.length > 0 && photo && nameLocation.length > 0 ? false : true}
                 onSubmit={() => handleSubmitForm()}
               />
@@ -230,14 +235,14 @@ const CreatePostsScreen = ({ navigation }) => {
           activeOpacity={0.7}
           style={{
             ...styles.wrapTrash,
-            backgroundColor: title || photo || nameLocation ? '#FF6C00' : '#F6F6F6',
+            backgroundColor: (title || photo || nameLocation) && !isLoading ? '#FF6C00' : '#F6F6F6',
           }}
           onPress={() => reset()}
         >
           <FontAwesome5
             name="trash-alt"
             size={24}
-            color={title || photo || nameLocation ? '#fff' : '#BDBDBD'}
+            color={(title || photo || nameLocation) && !isLoading ? '#fff' : '#BDBDBD'}
           />
         </TouchableOpacity>
       </View>
