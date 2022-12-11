@@ -103,6 +103,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
   useEffect(() => {
     MediaLibrary.requestPermissionsAsync();
+    // Camera.requestCameraPermissionsAsync()
     registerForPushNotificationsAsync();
     setCameraOn(true);
     (async () => {
@@ -205,6 +206,7 @@ const CreatePostsScreen = ({ navigation }) => {
     return <View />;
   }
   if (!permission.granted) {
+    requestPermission();
     return <Text>No access to camera</Text>;
   }
 
