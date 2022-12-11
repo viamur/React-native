@@ -12,7 +12,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { collection, addDoc } from "firebase/firestore";
 import { useSelector } from 'react-redux';
 import { db } from '../firebase/config'
@@ -30,6 +30,16 @@ import { getUserId } from '../redux/auth/authSelectors';
 
 //icon
 import { SimpleLineIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const CreatePostsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
@@ -50,8 +60,50 @@ const CreatePostsScreen = ({ navigation }) => {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [permissionResponse, requestPermissio] = MediaLibrary.usePermissions();
 
+  // функция для отправки оповещения
+  async function schedulePushNotification({ title, body }) {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title,
+        body,
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 1 },
+    });
+  }
+
+  // Делаем запрос на разрешение и регестрируем токен(его убрал) для оповещения
+  async function registerForPushNotificationsAsync() {
+
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  }
+
   useEffect(() => {
     MediaLibrary.requestPermissionsAsync();
+    registerForPushNotificationsAsync();
     setCameraOn(true);
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -119,6 +171,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
       const { id } = await addDoc(collection(db, "posts"), data);
 
+      await schedulePushNotification({ title: 'Пост опубликован!!!', body: `Название:${title}` });
 
       navigation.navigate('Posts');
       setIdPhoto(null);
