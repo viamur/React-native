@@ -167,6 +167,7 @@ const CreatePostsScreen = ({ navigation }) => {
         like: [],
         comment: 0,
         userId,
+        createDate: Date.now(),
       };
 
       const { id } = await addDoc(collection(db, "posts"), data);

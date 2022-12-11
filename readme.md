@@ -17,3 +17,7 @@
 # goit-react native-hw-05
 
 ![GitHub actions settings](./assets/screenshot/hw05.png)
+
+# goit-react native-hw-06
+
+![GitHub actions settings](./assets/screenshot/hw06.png)

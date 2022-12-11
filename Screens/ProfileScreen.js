@@ -47,7 +47,6 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
         photoURL: imageURL,
       })
       dispatch(updateAvatar(imageURL))
-      console.log('useEffect uploadFile imageURL user', imageURL, user)
     } catch (error) {
       console.log('updateAvatarUser Error', error)
     }

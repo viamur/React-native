@@ -1,5 +1,5 @@
 
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy } from 'firebase/firestore';
 import { useEffect, useRef, useState } from 'react';
 import { Button, FlatList, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -19,9 +19,8 @@ const PostsScreen = ({ navigation, route }) => {
 
   const getAllPost = async () => {
     isAuth && onSnapshot(collection(db, 'posts'), (doc) => {
-      const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }))
+      const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id })).sort((a, b) => b.createDate - a.createDate);
       setPosts(postsArray)
-      console.log(postsArray)
     })
   }
 

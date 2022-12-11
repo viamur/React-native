@@ -5,7 +5,6 @@ const uploadFile = async ({ path, photo, name = false }) => {
     try {
         // получаем путь
         const response = await fetch(photo);
-        console.log(photo)
         // переводим в формат другой для отправки
         const file = await response.blob();
 
