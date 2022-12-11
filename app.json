@@ -12,21 +12,32 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/08844d65-1a93-4de0-b7eb-4bf008c0c6dd"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "Give permission to access your photos",
-        "NSPhotoLibraryAddUsageDescription": "Give permission to save photos"
-      }
+        "NSPhotoLibraryUsageDescription": "Allow to access your photos.",
+        "NSPhotoLibraryAddUsageDescription": "Allow to save photos."
+      },
+      "bundleIdentifier": "com.viamur.CloneInstagram"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.viamur.CloneInstagram"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -46,7 +57,17 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      ["expo-notifications"]
-    ]
+      [
+        "expo-notifications"
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "08844d65-1a93-4de0-b7eb-4bf008c0c6dd"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }
