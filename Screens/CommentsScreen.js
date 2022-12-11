@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -36,6 +36,7 @@ const CommentsScreen = ({ navigation, route }) => {
   const userPhoto = useSelector(getUserPhoto);
 
   const { photo, id } = route.params;
+  const flatListRef = useRef();
 
   useEffect(() => {
     getAllComment()
@@ -80,6 +81,8 @@ const CommentsScreen = ({ navigation, route }) => {
       });
 
       setComment('')
+
+      flatListRef.current.scrollToEnd();
     } catch (error) {
       console.warn('commentError', error)
     }
@@ -95,6 +98,7 @@ const CommentsScreen = ({ navigation, route }) => {
             <Image source={{ uri: photo }} resizeMode="cover" style={styles.image} />
             <FlatList
               data={allComment.sort((a, b) => a.date - b.date)}
+              ref={flatListRef}
               style={{ flex: 1 }}
               // item={{ paddingBottom: 24 }}
               renderItem={({ item }) => <ItemComment userId={userId} data={item} />}

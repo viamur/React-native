@@ -1,8 +1,10 @@
 
 import { collection, onSnapshot } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Button, FlatList, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useScrollToTop } from '@react-navigation/native';
+
 import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
 import { db } from '../firebase/config';
@@ -13,18 +15,27 @@ const PostsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
 
   const isAuth = useSelector(getUserIsAuth);
+  const scrollViewRef = useRef();
 
   const getAllPost = async () => {
     isAuth && onSnapshot(collection(db, 'posts'), (doc) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }))
       setPosts(postsArray)
+      console.log(postsArray)
     })
   }
+
+
+  useEffect(() => {
+    if (posts.length > 1) {
+      scrollViewRef.current.scrollToOffset(0)
+    }
+  }, [posts.length])
+
 
   useEffect(() => {
     getAllPost()
   }, []);
-
 
   return (
     <View style={styles.container}>
@@ -32,6 +43,7 @@ const PostsScreen = ({ navigation, route }) => {
       {/* <ScrollView style={styles.scrollView}> */}
       <FlatList
         data={posts}
+        ref={scrollViewRef}
         style={{ width: '100%', marginTop: 32 }}
         renderItem={({ item }) => <ItemPost data={item} navigation={navigation} />}
         keyExtractor={(item, idx) => idx.toString()}
