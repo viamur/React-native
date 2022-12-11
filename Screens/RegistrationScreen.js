@@ -1,8 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import {
-  ImageBackground,
   Text,
   Keyboard,
   TouchableWithoutFeedback,
@@ -10,7 +8,7 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BgImage from '../components/BgImage';
 import BtnSubmit from '../components/BtnSubmit';
 import InputAvatar from '../components/InputAvatar';
@@ -18,10 +16,6 @@ import InputDefault from '../components/InputDefault';
 import InputPassword from '../components/InputPassword';
 import TextTitle from '../components/TextTitle';
 import { authSignUp } from '../redux/auth/authOperations';
-import uploadFile from '../utils/uploadFile';
-
-/* ImageBackground */
-const bgImage = require('../assets/images/bgAuth.jpeg');
 
 const RegistrationScreen = ({ }) => {
   const [login, setLogin] = useState('');
@@ -31,6 +25,7 @@ const RegistrationScreen = ({ }) => {
 
   const [isShowKeyboard, isSetShowKeyboard] = useState(false);
   const [nameActiveInput, setNameActiveInput] = useState('');
+
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
 

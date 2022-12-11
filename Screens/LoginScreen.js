@@ -53,7 +53,7 @@ const LoginScreen = ({ setIsAuth }) => {
       handleUseKeyboard();
 
       // перебрасывает на home
-      setIsAuth(true);
+      // setIsAuth(true);
     });
   };
 

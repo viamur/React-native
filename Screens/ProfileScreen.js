@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,7 +6,7 @@ import BgImage from '../components/BgImage';
 import InputAvatar from '../components/InputAvatar';
 import ItemPost from '../components/ItemPost';
 
-import { getUserId, getUserName, getUserPhoto } from '../redux/auth/authSelectors';
+import { getUserId, getUserIsAuth, getUserName, getUserPhoto } from '../redux/auth/authSelectors';
 import { authSignOut } from '../redux/auth/authOperations';
 
 //icon
@@ -23,17 +23,17 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
   const [posts, setPosts] = useState([])
   const [image, setImage] = useState(useSelector(getUserPhoto));
 
+  const isAuth = useSelector(getUserIsAuth);
   const userName = useSelector(getUserName);
   const userId = useSelector(getUserId);
   const photo = useSelector(getUserPhoto)
 
   const dispatch = useDispatch();
-  let listenersProfile;
 
   const getAllPosts = async () => {
     const q = query(collection(db, "posts"), where("userId", "==", userId));
 
-    listenersProfile = onSnapshot(q, (doc) => {
+    isAuth && onSnapshot(q, (doc) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }));
       setPosts(postsArray);
     });
@@ -55,7 +55,6 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
 
   useEffect(() => {
     getAllPosts();
-    return () => listenersProfile();
   }, []);
 
 

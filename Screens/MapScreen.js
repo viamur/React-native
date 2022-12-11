@@ -4,7 +4,6 @@ import MapView, { Marker } from 'react-native-maps';
 // icon
 import { AntDesign } from '@expo/vector-icons';
 
-import img from '../assets/icon.png';
 
 const MapScreen = ({ navigation, route: { params } }) => {
   if (!params.coordinate) {

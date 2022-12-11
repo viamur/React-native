@@ -1,19 +1,21 @@
 
-import { collection, doc, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
 import { db } from '../firebase/config';
+import { getUserIsAuth } from '../redux/auth/authSelectors';
 
 
 const PostsScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
 
-  let listenersPosts;
+  const isAuth = useSelector(getUserIsAuth);
 
   const getAllPost = async () => {
-    listenersPosts = onSnapshot(collection(db, 'posts'), (doc) => {
+    isAuth && onSnapshot(collection(db, 'posts'), (doc) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }))
       setPosts(postsArray)
     })
@@ -21,8 +23,8 @@ const PostsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     getAllPost()
-    return () => listenersPosts();
   }, []);
+
 
   return (
     <View style={styles.container}>

@@ -17,7 +17,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import ItemComment from '../components/ItemComment';
 import { useSelector } from 'react-redux';
-import { getUserId, getUserName, getUserPhoto } from '../redux/auth/authSelectors';
+import { getUserId, getUserIsAuth, getUserName, getUserPhoto } from '../redux/auth/authSelectors';
 import { addDoc, collection, doc, onSnapshot, updateDoc, where, increment } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { query } from 'firebase/database';
@@ -28,23 +28,21 @@ const CommentsScreen = ({ navigation, route }) => {
   const [allComment, setAllComment] = useState([]);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
 
+  const isAuth = useSelector(getUserIsAuth);
   const userId = useSelector(getUserId);
   const userName = useSelector(getUserName);
   const userPhoto = useSelector(getUserPhoto);
 
   const { photo, id } = route.params;
-  let listenerComments;
 
   useEffect(() => {
     getAllComment()
-
-    return () => listenerComments();
   }, [])
 
   const getAllComment = async () => {
     const q = query(collection(db, "comments"), where("postId", "==", id));
 
-    listenerComments = onSnapshot(q, (doc) => {
+    isAuth && onSnapshot(q, (doc) => {
       const postsArray = doc.docs.map(el => ({ ...el.data(), id: el.id }));
       setAllComment(postsArray);
     });

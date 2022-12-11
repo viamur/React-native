@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
+import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-import { StatusBar } from 'react-native';
+import { StatusBar, View, LogBox, ActivityIndicator } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Main from './components/Main'
 
+import Main from './components/Main'
 import store from './redux/store';
 
 /* Переменная Font дает нас возможность загрузить шрифты в асинхронном режиме в наше приложение. 
@@ -17,6 +18,8 @@ const loadFonts = async () => {
     'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
   });
 };
+
+SplashScreen.preventAutoHideAsync();
 
 
 export default function App() {
@@ -33,16 +36,39 @@ export default function App() {
   //   };
   // }, []);
 
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await loadFonts();
+      } catch (error) {
+        console.warn(error);
+      } finally {
+        setIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+
+
   if (!isReady) {
-    return (
-      <AppLoading startAsync={loadFonts} onFinish={() => setIsReady(true)} onError={console.warn} />
-    );
+    return null;
   }
+
+  LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core']);
 
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <Main />
+        <View style={{ flex: 1 }} onLayout={onLayoutRootView} >
+          <Main />
+        </View>
       </SafeAreaProvider>
       <StatusBar barStyle="dark-content" />
     </Provider>
