@@ -7,10 +7,10 @@ const TextTitle = ({ title }) => {
 const styles = StyleSheet.create({
   title: {
     fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
+    // fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
-    letterSpacing: '0,01em',
+    // letterSpacing: '0,01em',
 
     marginBottom: 33,
     color: '#212121',

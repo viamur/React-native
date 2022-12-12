@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
 
-    borderRadius: '50%',
+    borderRadius: 14,
   },
   noImage: {
     width: 28,
     height: 28,
 
-    borderRadius: '50%',
+    borderRadius: 14,
     backgroundColor: '#FF6C00',
 
     alignItems: 'center',
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 13,
     lineHeight: 18,
-    letterSpacing: 1,
+    // letterSpacing: 1,
 
     color: '#bdbdbd',
   },

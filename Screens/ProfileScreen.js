@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 30,
     lineHeight: 35,
-    letterSpacing: '0.01em',
+    // letterSpacing: '0.01em',
     color: '#212121',
 
     marginBottom: 32,

@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: -0.4,
+    // letterSpacing: -0.4,
     color: '#212121',
   },
   headerRight: {

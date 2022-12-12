@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 16,
     lineHeight: 19,
-    fontWeight: 500,
+    // fontWeight: 500,
 
     color: '#212121',
     marginBottom: 8,

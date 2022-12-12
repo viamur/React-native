@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   wrapInput: {
     // marginTop: 100,
-    position: 'absolut',
+    // position: 'absolute',
     width: '100%',
     // bottom: 16,
     // left: 16,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
 
-    borderRadius: '50%',
+    borderRadius: 17,
     backgroundColor: '#ff6c00',
 
     alignItems: 'center',

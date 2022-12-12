@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   profileName: {
     fontFamily: 'Roboto-Bold',
-    fontWeight: 700,
+    // fontWeight: 700,
     fontSize: 13,
     lineHeight: 15,
     color: '#212121',
