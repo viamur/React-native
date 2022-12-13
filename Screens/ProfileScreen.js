@@ -66,14 +66,14 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
 
   return (
     <BgImage>
-      <ScrollView>
+      <ScrollView snapToEnd={false} >
         <SafeAreaView style={{ paddingTop: 100 }}>
           <View style={styles.container}>
             <InputAvatar image={image} setImage={setImage} />
             <Text style={styles.userName}>{userName}</Text>
             <View style={{ width: '100%' }} >
 
-              {posts.map(el => {
+              {posts.sort((a, b) => b.createDate - a.createDate).map(el => {
                 return <ItemPost key={el.id} data={el} navigation={navigation} />
               })}
             </View>
@@ -89,7 +89,7 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    minHeight: '200%',
+    minHeight: 600,
     paddingTop: 90,
     paddingHorizontal: 16,
     position: 'relative',

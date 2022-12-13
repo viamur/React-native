@@ -10,7 +10,7 @@ const MapScreen = ({ navigation, route: { params } }) => {
     return (
       <View style={{ flex: 1 }}>
         <Text style={{ textAlign: 'center', fontSize: 24, marginTop: '50%' }}>
-          Координаты отсутсвуют
+          Отсутствуют координаты карты
         </Text>
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <AntDesign name="arrowleft" size={35} color="#FF6C00" />

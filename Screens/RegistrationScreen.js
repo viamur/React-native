@@ -81,7 +81,7 @@ const RegistrationScreen = ({ }) => {
             }}
           >
             <InputAvatar image={image} setImage={setImage} />
-            <TextTitle title="Регестрация" />
+            <TextTitle title="Регистрация" />
             <InputDefault
               nameActiveInput={nameActiveInput}
               placeholder="Логин"

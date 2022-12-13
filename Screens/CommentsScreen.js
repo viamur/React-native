@@ -82,6 +82,8 @@ const CommentsScreen = ({ navigation, route }) => {
 
       setComment('')
 
+      handleCloseKeyboard()
+
       flatListRef.current.scrollToEnd();
     } catch (error) {
       console.warn('commentError', error)
@@ -89,13 +91,17 @@ const CommentsScreen = ({ navigation, route }) => {
   }
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={60}
+      keyboardVerticalOffset={Platform.OS == 'ios' ? 60 : 100}
       behavior={Platform.OS == 'ios' ? 'position' : 'height'}
     >
       <View style={styles.container}>
         <TouchableWithoutFeedback disabled={!isOpenKeyboard} onPress={handleCloseKeyboard}>
           <View style={{ flex: 1 }}>
-            <Image source={{ uri: photo }} resizeMode="cover" style={styles.image} />
+            {!isOpenKeyboard && Platform.OS == 'android' ?
+              <Image source={{ uri: photo }} resizeMode="cover" style={styles.image} />
+              : Platform.OS == 'ios' &&
+              <Image source={{ uri: photo }} resizeMode="cover" style={styles.image} />
+            }
             <FlatList
               data={allComment.sort((a, b) => a.date - b.date)}
               ref={flatListRef}
@@ -144,6 +150,7 @@ const styles = StyleSheet.create({
   wrapInput: {
     // marginTop: 100,
     // position: 'absolute',
+    // zIndex: 10,
     width: '100%',
     // bottom: 16,
     // left: 16,
@@ -174,6 +181,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 8,
     bottom: 8,
+
   },
 });
 
