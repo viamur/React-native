@@ -22,14 +22,22 @@ const MapScreen = ({ navigation, route: { params } }) => {
     <View style={styles.container}>
       <MapView
         style={{ flex: 1 }}
-        region={params.coordinate.coords}
-        mapType="standard"
-        minZoomLevel={12}
+        initialRegion={{
+          latitude: params.coordinate.coords.latitude,
+          longitude: params.coordinate.coords.longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.01,
+        }}
       >
         <Marker
           title={params.nameLocation}
-          coordinate={params.coordinate.coords}
           description={params.title}
+          coordinate={
+            {
+              latitude: params.coordinate.coords.latitude,
+              longitude: params.coordinate.coords.longitude,
+            }
+          }
         />
       </MapView>
       <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>

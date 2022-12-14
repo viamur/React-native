@@ -61,7 +61,7 @@ const CommentsScreen = ({ navigation, route }) => {
   const handleSubmit = async () => {
     if (comment.length < 2) {
       Vibration.vibrate()
-      return Alert.alert('Комментарий должен быть больше 1го символа')
+      return Alert.alert('Comment must be more than 1 character')
     }
     try {
       await addDoc(collection(db, "comments"), {
@@ -115,7 +115,7 @@ const CommentsScreen = ({ navigation, route }) => {
         <View style={styles.wrapInput}>
           <TextInput
             style={styles.input}
-            placeholder="Комментировать..."
+            placeholder="Comment..."
             value={comment}
             onBlur={handleCloseKeyboard}
             onFocus={() => setIsOpenKeyboard(true)}
@@ -148,12 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   wrapInput: {
-    // marginTop: 100,
-    // position: 'absolute',
-    // zIndex: 10,
     width: '100%',
-    // bottom: 16,
-    // left: 16,
   },
   input: {
     width: '100%',

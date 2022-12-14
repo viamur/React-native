@@ -25,7 +25,7 @@ const InputPassword = ({ nameActiveInput, setPassword, password, handleActive })
         style={styles.btnPassword}
         onPress={() => setSecureText(prev => !prev)}
       >
-        <Text style={styles.btnPasswordText}>{secureText ? 'Показать' : 'Скрыть'}</Text>
+        <Text style={styles.btnPasswordText}>{secureText ? 'show' : 'hide'}</Text>
       </TouchableOpacity>
     </View>
   );

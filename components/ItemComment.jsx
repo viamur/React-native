@@ -5,7 +5,7 @@ const ItemComment = ({ userId, data }) => {
   // check is owner this comment user
   const isOwner = userId == data.user.id;
 
-  // convert date in 09 июня, 2020 | 09:14
+  // convert date in 09 june, 2020 | 09:14
   const date = getDate(data.date);
 
   return (

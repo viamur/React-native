@@ -1,6 +1,5 @@
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { useState, useEffect } from 'react';
 
 // expo
 import * as ImagePicker from 'expo-image-picker';

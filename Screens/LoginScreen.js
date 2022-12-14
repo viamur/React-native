@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
-  ImageBackground,
   Text,
   Keyboard,
   TouchableWithoutFeedback,

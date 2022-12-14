@@ -3,8 +3,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 // icon
 import { SimpleLineIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 
-//del
-import img from '../assets/icon.png';
 import { useSelector } from 'react-redux';
 import { getUserId } from '../redux/auth/authSelectors';
 import { doc, updateDoc } from 'firebase/firestore';

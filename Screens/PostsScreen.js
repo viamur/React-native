@@ -1,9 +1,8 @@
 
-import { collection, onSnapshot, orderBy } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { useEffect, useRef, useState } from 'react';
-import { Button, FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useScrollToTop } from '@react-navigation/native';
 
 import ItemPost from '../components/ItemPost';
 import ProfilePost from '../components/ProfilePost';
@@ -39,7 +38,6 @@ const PostsScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <ProfilePost />
-      {/* <ScrollView style={styles.scrollView}> */}
       <FlatList
         data={posts}
         ref={scrollViewRef}
@@ -47,7 +45,6 @@ const PostsScreen = ({ navigation, route }) => {
         renderItem={({ item }) => <ItemPost data={item} navigation={navigation} />}
         keyExtractor={(item, idx) => idx.toString()}
       />
-      {/* </ScrollView> */}
     </View>
   );
 };

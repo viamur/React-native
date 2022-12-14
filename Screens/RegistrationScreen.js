@@ -8,7 +8,7 @@ import {
   Platform,
   StyleSheet,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import BgImage from '../components/BgImage';
 import BtnSubmit from '../components/BtnSubmit';
 import InputAvatar from '../components/InputAvatar';

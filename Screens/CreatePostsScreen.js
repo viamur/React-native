@@ -4,7 +4,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -12,13 +11,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { collection, addDoc } from "firebase/firestore";
 import { useSelector } from 'react-redux';
 import { db } from '../firebase/config'
 
 // expo modul
-import { Camera, CameraType } from 'expo-camera';
+import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';

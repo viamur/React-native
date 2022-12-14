@@ -2,7 +2,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from "firebase/storage";
-import { getDatabase } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 
 import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDERID, APP_ID } from '@env'
@@ -30,20 +29,5 @@ export const auth = getAuth(app);
 // Initialize Cloud Storage and get a reference to the service
 export const storage = getStorage(app);
 
-// Initialize Realtime Database and get a reference to the service
-// export const database = getDatabase(app);
-
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
-
-/* 
-
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if false;
-    }
-  }
-} 
-
-*/

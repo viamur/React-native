@@ -95,11 +95,4 @@ export const authStateChangedUser = createAsyncThunk('auth/StateChangedUser', as
 
 
 
-  // try {
-  //   const res = onAuthStateChanged();
-  //   console.warn('======authStateChangedUser=========', res);
-  //   return res;
-  // } catch (error) {
-  //   return thunkApi.rejectWithValue(error.message);
-  // }
 });
