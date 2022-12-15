@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,11 +12,13 @@ import { authSignOut } from '../redux/auth/authOperations';
 //icon
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { auth, db } from '../firebase/config';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { auth, db, storage } from '../firebase/config';
+import { collection, onSnapshot, query, where, doc, deleteDoc } from 'firebase/firestore';
 import uploadFile from '../utils/uploadFile';
 import { updateProfile } from 'firebase/auth';
 import { updateAvatar } from '../redux/auth/authSlice';
+import { async } from '@firebase/util';
+import { deleteObject, ref } from 'firebase/storage';
 
 
 const ProfileScreen = ({ navigation, setIsAuth }) => {
@@ -52,6 +54,30 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
     }
   }
 
+  const handleDelPost = async (id, urlPhoto, title) => {
+    try {
+      await deleteDoc(doc(db, 'posts', id));
+      const desertRef = ref(storage, urlPhoto);
+      await deleteObject(desertRef);
+    } catch (error) {
+      console.warn('handleDelPost', error)
+    }
+  }
+
+  const createTwoButtonAlert = (id, urlPhoto, title) =>
+    Alert.alert(
+      "Do you want to delete this post?",
+      title,
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Delete", onPress: () => handleDelPost(id, urlPhoto, title) }
+      ]
+    );
+
   useEffect(() => {
     getAllPosts();
   }, []);
@@ -74,7 +100,14 @@ const ProfileScreen = ({ navigation, setIsAuth }) => {
             <View style={{ width: '100%' }} >
 
               {posts.sort((a, b) => b.createDate - a.createDate).map(el => {
-                return <ItemPost key={el.id} data={el} navigation={navigation} />
+                return (
+                  <View key={el.id} style={{ flex: 1, position: 'relative' }}>
+                    <TouchableOpacity activeOpacity={0.6} onPress={() => createTwoButtonAlert(el.id, el.photo, el.title)} style={styles.delPostBtn}>
+                      <MaterialIcons name="close" size={20} color="#fff" />
+                    </TouchableOpacity>
+                    <ItemPost data={el} navigation={navigation} />
+                  </View>
+                )
               })}
             </View>
             <TouchableOpacity onPress={() => dispatch(authSignOut())} style={styles.logout}>
@@ -111,6 +144,21 @@ const styles = StyleSheet.create({
     color: '#212121',
 
     marginBottom: 32,
-  },
+  }, delPostBtn: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 10,
+
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#FF6C00',
+
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    opacity: 0.8
+  }
 });
 export default ProfileScreen;
