@@ -13,7 +13,7 @@ const InputPassword = ({ nameActiveInput, setPassword, password, handleActive })
             : { ...styles.input }
         }
         placeholderTextColor="#BDBDBD"
-        placeholder="Пароль"
+        placeholder="Password"
         secureTextEntry={secureText}
         onChangeText={text => setPassword(text)}
         onFocus={() => handleActive('onFocus', 'password')}

@@ -102,7 +102,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
   useEffect(() => {
     MediaLibrary.requestPermissionsAsync();
-    // Camera.requestCameraPermissionsAsync()
+    Camera.requestCameraPermissionsAsync()
     registerForPushNotificationsAsync();
     setCameraOn(true);
     (async () => {
@@ -172,7 +172,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
       const { id } = await addDoc(collection(db, "posts"), data);
 
-      await schedulePushNotification({ title: 'Пост опубликован!!!', body: `Название:${title}` });
+      await schedulePushNotification({ title: 'Post published!!!', body: `Title:${title}` });
 
       navigation.navigate('Posts');
       setIdPhoto(null);
@@ -245,13 +245,13 @@ const CreatePostsScreen = ({ navigation }) => {
                   </View>
                 </View>
                 <Text style={styles.textUploadImg}>
-                  {!photo ? 'Загрузите фото' : 'Редактировать фото'}
+                  {!photo ? 'Upload a photo' : 'Replace photo'}
                 </Text>
               </TouchableOpacity>
               {/* ===========================================FORM=============================== */}
               <TextInput
                 style={styles.inputName}
-                placeholder="Название..."
+                placeholder="Title..."
                 placeholderTextColor={'#bdbdbd'}
                 onFocus={() => setIsOpenKeyboard(true)}
                 onBlur={handleUseKeyboard}
@@ -261,7 +261,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
               <TouchableOpacity activeOpacity={0.7} style={styles.wrapLocation}>
                 <TextInput
-                  placeholder="Местность..."
+                  placeholder="Location name..."
                   placeholderTextColor={'#bdbdbd'}
                   onFocus={() => setIsOpenKeyboard(true)}
                   onBlur={handleUseKeyboard}
@@ -277,7 +277,7 @@ const CreatePostsScreen = ({ navigation }) => {
                 />
               </TouchableOpacity>
               <BtnSubmit
-                title={'Опубликовать'}
+                title={'Publish'}
                 loading={isLoading}
                 disabled={title.length > 0 && photo && nameLocation.length > 0 ? false : true}
                 onSubmit={() => handleSubmitForm()}

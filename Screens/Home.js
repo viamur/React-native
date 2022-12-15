@@ -23,7 +23,7 @@ const Home = ({ }) => {
         name="Posts"
         component={PostsScreen}
         options={{
-          title: 'Публикации',
+          title: 'Publications',
           headerTitleStyle: styles.headerTitle,
           headerRight: () => (
             <TouchableOpacity onPress={() => dispatch(authSignOut())}>
@@ -45,7 +45,7 @@ const Home = ({ }) => {
         options={{
           unmountOnBlur: true,
           tabBarStyle: { display: 'none' },
-          title: 'Создать Публикацию',
+          title: 'Create Post',
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <AntDesign name="arrowleft" size={24} color="rgba(33, 33, 33, 0.8)" />

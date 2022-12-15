@@ -35,7 +35,7 @@ const useRoute = ({ isAuth }) => {
         <RootStack.Screen
           name="Comment"
           options={{
-            title: 'Комментарии',
+            title: 'Comments',
             headerLeft: props => (
               <TouchableOpacity
                 onPress={() => {

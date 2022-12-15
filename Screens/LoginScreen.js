@@ -42,6 +42,10 @@ const LoginScreen = ({ setIsAuth }) => {
   };
 
   const handleSubmit = () => {
+    if (email === '' || password === '') {
+      return;
+    }
+
     dispatch(authSignIn({ email, password })).then(res => {
       if (res.error) {
         return alert(res.payload);
@@ -67,11 +71,11 @@ const LoginScreen = ({ setIsAuth }) => {
               paddingBottom: isShowKeyboard ? (Platform.OS == 'ios' ? 260 : 32) : 110,
             }}
           >
-            <TextTitle title="Войти" />
+            <TextTitle title="Sign In" />
 
             <InputDefault
               nameActiveInput={nameActiveInput}
-              placeholder="Адрес электронной почты"
+              placeholder="Email"
               setChange={setEmail}
               handleActive={handleActive}
               name="email"
@@ -86,11 +90,11 @@ const LoginScreen = ({ setIsAuth }) => {
             />
             {!isShowKeyboard && (
               <>
-                <BtnSubmit title={'Войти'} onSubmit={handleSubmit} />
+                <BtnSubmit title={'Login'} onSubmit={handleSubmit} />
 
                 <Text style={styles.textBottom}>
-                  Нет аккаунта?{' '}
-                  <Text onPress={() => navigate('Registration')}> Зарегистрироваться</Text>
+                  Don't have an account?{' '}
+                  <Text onPress={() => navigate('Registration')}>Register</Text>
                 </Text>
               </>
             )}

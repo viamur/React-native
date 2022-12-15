@@ -50,6 +50,10 @@ const RegistrationScreen = ({ }) => {
 
   const handleSubmit = async () => {
 
+    if (email === '' || password === '' || login === '') {
+      return;
+    }
+
     dispatch(authSignUp({ login, image, email, password })).then(res => {
       // if error to show alert
       if (res.error) {
@@ -81,10 +85,10 @@ const RegistrationScreen = ({ }) => {
             }}
           >
             <InputAvatar image={image} setImage={setImage} />
-            <TextTitle title="Регистрация" />
+            <TextTitle title="Registration" />
             <InputDefault
               nameActiveInput={nameActiveInput}
-              placeholder="Логин"
+              placeholder="Nickname"
               setChange={setLogin}
               handleActive={handleActive}
               name="login"
@@ -92,7 +96,7 @@ const RegistrationScreen = ({ }) => {
             />
             <InputDefault
               nameActiveInput={nameActiveInput}
-              placeholder="Адрес электронной почты"
+              placeholder="Email"
               setChange={setEmail}
               handleActive={handleActive}
               name="email"
@@ -107,16 +111,16 @@ const RegistrationScreen = ({ }) => {
             />
             {!isShowKeyboard && (
               <>
-                <BtnSubmit title={'Зарегистрироваться'} onSubmit={handleSubmit} />
+                <BtnSubmit title={'Sign up'} onSubmit={handleSubmit} />
 
                 <Text style={styles.textBottom}>
-                  Уже есть аккаунт?{' '}
+                  Do you have an account?{' '}
                   <Text
                     onPress={() => {
                       navigate('Login');
                     }}
                   >
-                    Войти
+                    Login
                   </Text>
                 </Text>
               </>
