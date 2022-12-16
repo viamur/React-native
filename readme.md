@@ -14,6 +14,7 @@ Android open this link on your device:
 ```sh
 exp://u.expo.dev/update/f6f0c13c-7ee5-487f-b44b-1c4a34065b70
 ```
+    
     </td>
   </tr>
  </table>
