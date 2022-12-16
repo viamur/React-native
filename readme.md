@@ -1,5 +1,12 @@
 <h1 align="center">React native - my first app</h1>
 
+<table>
+  <tr>
+    <td><img src="./assets/screenshot/preview.gif" width=270 height=480></td>
+    <td><img src="./assets/screenshot/hw07.png" width=270 height=480></td>
+  </tr>
+ </table>
+
 <img align="center" src="./assets/screenshot/preview.gif" height="420" />
 
 ![GitHub actions settings](./assets/screenshot/hw07.png)
