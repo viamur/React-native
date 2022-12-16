@@ -1,5 +1,6 @@
 <h1 align="center">React native - my first app</h1>
-![alt-text-1](./assets/screenshot/preview.gif "title-1") ![alt-text-2](./assets/screenshot/hw07.png "title-2")
+![GitHub actions settings](./assets/screenshot/hw07.png) ![GitHub actions settings](./assets/screenshot/hw07.png)
+
 <img align="center" src="./assets/screenshot/preview.gif" height="420" />
 
 ![GitHub actions settings](./assets/screenshot/hw07.png)
