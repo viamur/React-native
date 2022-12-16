@@ -1,6 +1,6 @@
 <h1 align="center">React native - my first app</h1>
 <div>
-<img src="./assets/screenshot/preview.gif" />
+<img src="./assets/screenshot/preview.gif" height="320" />
 </div>
 # goit-react native-hw-01
 
