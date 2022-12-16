@@ -1,9 +1,8 @@
 <h1 align="center">React native - my first app</h1>
+
 ![GitHub actions settings](./assets/screenshot/hw07.png) ![GitHub actions settings](./assets/screenshot/hw07.png)
 
-<img align="center" src="./assets/screenshot/preview.gif" height="420" />
 
-![GitHub actions settings](./assets/screenshot/hw07.png)
 
 iOS open this link on your device:
 ```sh
