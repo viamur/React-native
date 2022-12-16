@@ -1,8 +1,10 @@
 <h1 align="center">React native - my first app</h1>
-<div style="display: flex;" >
-<img src="./assets/screenshot/preview.gif" height="420" />
-  <p>Test</p>
-</div>
+<img align="center" src="./assets/screenshot/preview.gif" height="420" />
+
+```sh
+gulp build dist --prod
+```
+
 # goit-react native-hw-01
 
 ![GitHub actions settings](./assets/screenshot/hw01.png)
