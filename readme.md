@@ -1,5 +1,5 @@
 <h1 align="center">React native - my first app</h1>
-<div style="display: flex" >
+<div style="display: flex;" >
 <img src="./assets/screenshot/preview.gif" height="420" />
   <p>Test</p>
 </div>
