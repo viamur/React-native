@@ -4,7 +4,7 @@
   <tr>
     <td><img src="./assets/screenshot/preview.gif" width=270 height=480></td>
     <td>
-    <p>Mobile application with user registration. The user can create a post with a photo and geolocation. All photos taken in the application are saved to the user's mobile phone. Here you can leave likes and comments. See the feed of posts of all users. Delete your posts in the user profile. Upload user avatar.
+    <p>Mobile application with user registration. The user can create a post with a photo and geolocation. All photos taken in the application are saved to the user's mobile phone. Here you can leave likes and comments. See the feed of posts of all users. Delete your posts in the user profile. Upload user's avatar from the user's photo gallery.
 
 The app works with firebase: auth/storage/firestore.</p>
       <img src="./assets/screenshot/hw07.png"> 
