@@ -12,8 +12,8 @@ Android open this link on your device:
 ```sh
 exp://u.expo.dev/update/f6f0c13c-7ee5-487f-b44b-1c4a34065b70
 ```
+<h2 align="center">Below are screenshots of the application development stages ⬇️ ⬇️ ⬇️</h2>
 
-Below are screenshots of the application development stages ⬇️ ⬇️ ⬇️
 
 # goit-react native-hw-01
 
