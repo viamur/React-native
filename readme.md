@@ -13,6 +13,8 @@ Android open this link on your device:
 exp://u.expo.dev/update/f6f0c13c-7ee5-487f-b44b-1c4a34065b70
 ```
 
+Below are screenshots of the application development stages ⬇️ ⬇️ ⬇️
+
 # goit-react native-hw-01
 
 ![GitHub actions settings](./assets/screenshot/hw01.png)
