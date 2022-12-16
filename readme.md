@@ -1,8 +1,8 @@
-<h1 align="center">React native - my first app</h1>
+<h1 align="center">React native - my first app 📱</h1>
 
 <table>
   <tr>
-    <td><img src="./assets/screenshot/preview.gif" width=270 height=480></td>
+    <td align="center"><img src="./assets/screenshot/preview.gif" width=270 height=480></td>
     </tr>
     <tr>
     <td>
