@@ -5,23 +5,9 @@
     <td><img src="./assets/screenshot/preview.gif" width=270 height=480></td>
     <td>
       <img src="./assets/screenshot/hw07.png"> 
-      
-            iOS open this link on your device:
-```sh
-exp://u.expo.dev/update/d407ec9c-1b31-4e17-933a-1215b66ded6c
-```
-Android open this link on your device:
-```sh
-exp://u.expo.dev/update/f6f0c13c-7ee5-487f-b44b-1c4a34065b70
-```
-      
     </td>
   </tr>
  </table>
-
-<img align="center" src="./assets/screenshot/preview.gif" height="420" />
-
-![GitHub actions settings](./assets/screenshot/hw07.png)
 
 iOS open this link on your device:
 ```sh
