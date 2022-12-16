@@ -1,6 +1,6 @@
 <h1 align="center">React native - my first app</h1>
 
-<img src="./assets/screenshot/preview.gif" width="200"/> <img src="./assets/screenshot/hw07.png" width="300"/>
+<img src="./assets/screenshot/preview.gif" width="200"/> <img src="./assets/screenshot/hw07.png"/>
 
 
 
